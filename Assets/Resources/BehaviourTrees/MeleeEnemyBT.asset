@@ -24,8 +24,8 @@ MonoBehaviour:
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"LowHealthThreshold":{"_value":35.0,"_name":"LowHealthThreshold","_id":"25f3faf7-0289-4a37-8a0d-5375379ac813","_isPublic":true,"$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"PatrolPoints":{"_value":[null,null,null,null],"_name":"PatrolPoints","_id":"e1d1ec88-5ebd-4b0f-ab87-8953d78396cd","_isPublic":true,"$type":"NodeCanvas.Framework.Variable`1[[System.Collections.Generic.List`1[[UnityEngine.GameObject,
     UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]],
-    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"PatrolSpeed":{"_value":5.0,"_name":"PatrolSpeed","_id":"1f370880-921c-4dd4-bf9d-5c7b31558274","_isPublic":true,"$type":"NodeCanvas.Framework.Variable`1[[System.Single,
-    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"ChaseSpeed":{"_value":8.0,"_name":"ChaseSpeed","_id":"23cd93eb-be50-4202-a58f-8368ad7be779","_isPublic":true,"$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"PatrolSpeed":{"_value":4.0,"_name":"PatrolSpeed","_id":"1f370880-921c-4dd4-bf9d-5c7b31558274","_isPublic":true,"$type":"NodeCanvas.Framework.Variable`1[[System.Single,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"ChaseSpeed":{"_value":6.0,"_name":"ChaseSpeed","_id":"23cd93eb-be50-4202-a58f-8368ad7be779","_isPublic":true,"$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"NextAttackTime":{"_name":"NextAttackTime","_id":"8ea20815-74fa-4adb-b8cd-d9290f715977","$type":"NodeCanvas.Framework.Variable`1[[System.Single,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"IsBlocking":{"_name":"IsBlocking","_id":"912311ce-5480-4778-8148-7f33d1318ad1","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}},"derivedData":{"repeat":true,"$type":"NodeCanvas.BehaviourTrees.BehaviourTree+DerivedSerializationData"}}'
@@ -34,7 +34,7 @@ MonoBehaviour:
     _version: 3.42
     _category: 
     _comments: 
-    _translation: {x: 360, y: 395}
+    _translation: {x: 596, y: 297}
     _zoomFactor: 0.99867374
   _haltSerialization: 0
   _externalSerializationFile: {fileID: 0}

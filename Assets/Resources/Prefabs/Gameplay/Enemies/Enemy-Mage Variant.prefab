@@ -34,15 +34,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 84.87299
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.07
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 40.147858
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -50,15 +50,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -74,10 +74,44 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7331698818334432460, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: associatedCheckpoint
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 767189127242400356, guid: ea415220604e6d748b429570db60b69d, type: 3}
+      insertIndex: 6
+      addedObject: {fileID: 7395310460297808852}
   m_SourcePrefab: {fileID: 100100000, guid: ea415220604e6d748b429570db60b69d, type: 3}
+--- !u!1 &6590342412409753405 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 767189127242400356, guid: ea415220604e6d748b429570db60b69d, type: 3}
+  m_PrefabInstance: {fileID: 5895216256772771161}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7395310460297808852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6590342412409753405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01814af271a24674c8fee9a8510656bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.Systems.Enemy.EnemySenses
+  viewDistance: 10
+  viewAngle: 18.4
+  awarenessDistance: 10
+  memoryTime: 5
+  eyeHeight: 1.5
+  targetOffset: {x: 0, y: 1, z: 0}
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  detectedBy: 0
+  alwaysDrawGizmos: 0
+  coneColor: {r: 1, g: 0.85, b: 0.2, a: 0.15}
+  awarenessColor: {r: 0.3, g: 0.7, b: 1, a: 0.6}
+  sensedColor: {r: 1, g: 0.25, b: 0.2, a: 0.25}

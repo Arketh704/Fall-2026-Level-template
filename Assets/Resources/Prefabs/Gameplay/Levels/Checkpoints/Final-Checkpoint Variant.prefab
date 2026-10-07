@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6821989848459162126, guid: 8c3a235291d86ca4d8a0b940f1bd2a67, type: 3}
       propertyPath: detectionRadius
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -6821989848459162126, guid: 8c3a235291d86ca4d8a0b940f1bd2a67, type: 3}
       propertyPath: triggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -30,15 +30,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2088136267437803999, guid: 8c3a235291d86ca4d8a0b940f1bd2a67, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 10.69
       objectReference: {fileID: 0}
     - target: {fileID: 2088136267437803999, guid: 8c3a235291d86ca4d8a0b940f1bd2a67, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.07
       objectReference: {fileID: 0}
     - target: {fileID: 2088136267437803999, guid: 8c3a235291d86ca4d8a0b940f1bd2a67, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -19.68
       objectReference: {fileID: 0}
     - target: {fileID: 2088136267437803999, guid: 8c3a235291d86ca4d8a0b940f1bd2a67, type: 3}
       propertyPath: m_LocalRotation.w

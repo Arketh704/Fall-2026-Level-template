@@ -74,12 +74,13 @@ namespace LevelDesign.Systems.Enemy
 
     [Category("Enemy")]
     [Description("View cone + awareness radius + line of sight, with a short memory so the agent stays in combat " +
-                 "while it turns away (e.g. walking to high ground) instead of dropping straight back to patrol.")]
+                 "while it turns away (e.g. walking to high ground) instead of dropping straight back to patrol.\n\n" +
+                 "Defaults to using the Enemy Senses Component ")]
     public class CanSenseTarget : ConditionTask<Transform>
     {
         [RequiredField] public BBParameter<GameObject> target;
 
-        [Header("Senses")]
+        [Header("Fallback Senses (used only without EnemySenses)")]
         public BBParameter<float> viewDistance = 20f;
         [SliderField(1f, 180f)] public BBParameter<float> viewAngle = 70f;
         public BBParameter<float> awarenessDistance = 10f;
@@ -90,20 +91,37 @@ namespace LevelDesign.Systems.Enemy
         public BBParameter<Vector3> targetOffset = Vector3.up;
         public BBParameter<LayerMask> obstacleMask = (LayerMask)Physics.DefaultRaycastLayers;
 
+        private EnemySenses senses;
         private float lastSensedTime = float.NegativeInfinity;
 
-        protected override string info { get { return "Sense " + target + " (" + memoryTime + "s memory)"; } }
+        protected override string info {
+            get { return "Sense " + target + (senses != null ? " (EnemySenses)" : " (" + memoryTime + "s memory)"); }
+        }
+
+        protected override string OnInit()
+        {
+            senses = agent.GetComponent<EnemySenses>();
+            if(senses == null) { senses = agent.GetComponentInParent<EnemySenses>(); }
+            if(senses == null) { senses = agent.GetComponentInChildren<EnemySenses>(); }
+            if(senses == null) {
+                Debug.LogWarning("CanSenseTarget on '" + agent.name + "': no EnemySenses found, using the node's fallback values.", agent);
+            }
+            return null;
+        }
 
         protected override bool OnCheck()
         {
+            if(senses != null) { return senses.Sense(target.value); }
+
             var t = target.value;
             if(t == null) { return false; }
 
             var to = t.transform.position - agent.position; to.y = 0f;
             var dist = to.magnitude;
+            var fwd = agent.forward; fwd.y = 0f;
 
             var inRange = dist <= awarenessDistance.value ||
-                          (dist <= viewDistance.value && Vector3.Angle(agent.forward, to) <= viewAngle.value);
+                          (dist <= viewDistance.value && Vector3.Angle(fwd, to) <= viewAngle.value);
 
             if(inRange && EnemyUtil.HasLineOfSight(agent.position + Vector3.up * eyeHeight.value, t, targetOffset.value, obstacleMask.value.value)) {
                 lastSensedTime = Time.time;
