@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4323749939128425373}
   - component: {fileID: 5249930605429121957}
   m_Layer: 0
-  m_Name: FireZone
+  m_Name: 'FireZone [Edit]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

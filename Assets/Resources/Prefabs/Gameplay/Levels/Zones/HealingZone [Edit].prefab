@@ -24255,7 +24255,7 @@ GameObject:
   - component: {fileID: 680519439254491377}
   - component: {fileID: 9114665302523292037}
   m_Layer: 0
-  m_Name: HealingZone
+  m_Name: 'HealingZone [Edit]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

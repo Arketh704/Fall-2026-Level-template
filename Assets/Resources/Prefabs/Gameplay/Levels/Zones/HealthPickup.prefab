@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3216440492813015665}
   - component: {fileID: 9201652858531438599}
   m_Layer: 0
-  m_Name: ColliderArea
+  m_Name: 'ColliderArea [Edit]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

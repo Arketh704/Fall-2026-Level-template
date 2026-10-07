@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5895216256772771161
+--- !u!1001 &6955281232115117925
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -8,17 +8,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 767189127242400356, guid: ea415220604e6d748b429570db60b69d, type: 3}
+      propertyPath: m_Name
+      value: 'Navigation and Health [Edit]'
+      objectReference: {fileID: 0}
     - target: {fileID: 1355711136234724228, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3501088964196058221, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_Name
-      value: Enemy-Mage Variant
+      value: Enemy-Melee Variant
       objectReference: {fileID: 0}
     - target: {fileID: 3501088964196058221, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4096222301487360243, guid: ea415220604e6d748b429570db60b69d, type: 3}
+      propertyPath: animForwardSpeed
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4208705376746557741, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: damageFeedback
@@ -28,13 +36,17 @@ PrefabInstance:
       propertyPath: healingFeedback
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4451345766812611663, guid: ea415220604e6d748b429570db60b69d, type: 3}
+      propertyPath: m_Name
+      value: 'PatrolPath [Edit]'
+      objectReference: {fileID: 0}
     - target: {fileID: 4608821751651219860, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 84.87299
+      value: 87.35
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -42,11 +54,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 40.147858
+      value: 49.29
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.013292877
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalRotation.x
@@ -54,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.99991167
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalRotation.z
@@ -66,52 +78,59 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -181.523
       objectReference: {fileID: 0}
     - target: {fileID: 6903310306064579770, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7307094467498874778, guid: ea415220604e6d748b429570db60b69d, type: 3}
+      propertyPath: _graph
+      value: 
+      objectReference: {fileID: 11400000, guid: 5cfa74705dbb8884d9dd7374ee8c25a4, type: 2}
+    - target: {fileID: 7331698818334432460, guid: ea415220604e6d748b429570db60b69d, type: 3}
+      propertyPath: enemyType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7331698818334432460, guid: ea415220604e6d748b429570db60b69d, type: 3}
       propertyPath: associatedCheckpoint
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8512658883169362096, guid: ea415220604e6d748b429570db60b69d, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 247
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 767189127242400356, guid: ea415220604e6d748b429570db60b69d, type: 3}
-      insertIndex: 6
-      addedObject: {fileID: 7395310460297808852}
+      insertIndex: 4
+      addedObject: {fileID: 2357333619846787646}
   m_SourcePrefab: {fileID: 100100000, guid: ea415220604e6d748b429570db60b69d, type: 3}
---- !u!1 &6590342412409753405 stripped
+--- !u!1 &7648102949087538433 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 767189127242400356, guid: ea415220604e6d748b429570db60b69d, type: 3}
-  m_PrefabInstance: {fileID: 5895216256772771161}
+  m_PrefabInstance: {fileID: 6955281232115117925}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7395310460297808852
+--- !u!114 &2357333619846787646
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6590342412409753405}
+  m_GameObject: {fileID: 7648102949087538433}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01814af271a24674c8fee9a8510656bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.Systems.Enemy.EnemySenses
   viewDistance: 10
-  viewAngle: 18.4
-  awarenessDistance: 10
-  memoryTime: 5
+  viewAngle: 55
+  awarenessDistance: 3
+  memoryTime: 2
   eyeHeight: 1.5
   targetOffset: {x: 0, y: 1, z: 0}
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 4294967291
-  detectedBy: 0
-  alwaysDrawGizmos: 0
-  coneColor: {r: 1, g: 0.85, b: 0.2, a: 0.15}
-  awarenessColor: {r: 0.3, g: 0.7, b: 1, a: 0.6}
-  sensedColor: {r: 1, g: 0.25, b: 0.2, a: 0.25}
+    m_Bits: 65

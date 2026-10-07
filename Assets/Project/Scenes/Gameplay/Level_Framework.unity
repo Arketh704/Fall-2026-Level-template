@@ -165,7 +165,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1683861849069658191, guid: f823fbe6f3d5da546adac1b4218afc24, type: 3}
       propertyPath: m_Name
-      value: FireZone
+      value: 'FireZone [Edit]'
       objectReference: {fileID: 0}
     - target: {fileID: 3847555023208431934, guid: f823fbe6f3d5da546adac1b4218afc24, type: 3}
       propertyPath: m_LocalPosition.x
@@ -601,41 +601,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3778360424000721301, guid: 55d158171ca79a84190e17b6ca6eb40d, type: 3}
-      propertyPath: associatedCheckpoint
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7009393424109324596, guid: 55d158171ca79a84190e17b6ca6eb40d, type: 3}
       propertyPath: m_Name
-      value: Enemy-Mage Variant
-      objectReference: {fileID: 0}
-    - target: {fileID: 7395310460297808852, guid: 55d158171ca79a84190e17b6ca6eb40d, type: 3}
-      propertyPath: viewAngle
-      value: 55
-      objectReference: {fileID: 0}
-    - target: {fileID: 7395310460297808852, guid: 55d158171ca79a84190e17b6ca6eb40d, type: 3}
-      propertyPath: memoryTime
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7395310460297808852, guid: 55d158171ca79a84190e17b6ca6eb40d, type: 3}
-      propertyPath: viewDistance
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 7395310460297808852, guid: 55d158171ca79a84190e17b6ca6eb40d, type: 3}
-      propertyPath: alwaysDrawGizmos
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7395310460297808852, guid: 55d158171ca79a84190e17b6ca6eb40d, type: 3}
-      propertyPath: awarenessDistance
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7395310460297808852, guid: 55d158171ca79a84190e17b6ca6eb40d, type: 3}
-      propertyPath: obstacleMask.m_Bits
-      value: 65
-      objectReference: {fileID: 0}
-    - target: {fileID: 7568500970857129386, guid: 55d158171ca79a84190e17b6ca6eb40d, type: 3}
-      propertyPath: animForwardSpeed
-      value: 3
+      value: 'Enemy-Mage Variant [Edit]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1202,32 +1170,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 389797ebc4536424ea52de4c4a52922f, type: 3}
---- !u!1 &799700773 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7648102949087538433, guid: db10eca41c5dd0f41aab8f9282f8b3eb, type: 3}
-  m_PrefabInstance: {fileID: 1932964978}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &799700785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 799700773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01814af271a24674c8fee9a8510656bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.Systems.Enemy.EnemySenses
-  viewDistance: 10
-  viewAngle: 55
-  awarenessDistance: 3
-  memoryTime: 2
-  eyeHeight: 1.5
-  targetOffset: {x: 0, y: 1, z: 0}
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 65
 --- !u!1 &839086039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2534,7 +2476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4509523455504042797, guid: 1aab7d1ac4e9086478ed0abd52c48640, type: 3}
       propertyPath: m_Name
-      value: HealingZone
+      value: 'HealingZone [Edit]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3047,6 +2989,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2243088755740888526, guid: 72d98c780b4d3574e8df780f0b043c0f, type: 3}
+      propertyPath: m_Name
+      value: 'ColliderArea [Edit]'
+      objectReference: {fileID: 0}
     - target: {fileID: 5877406153771555028, guid: 72d98c780b4d3574e8df780f0b043c0f, type: 3}
       propertyPath: m_Name
       value: HealthPickup
@@ -3071,7 +3017,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2088136267437803999, guid: 8c3a235291d86ca4d8a0b940f1bd2a67, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 28.33
+      value: 30.51
       objectReference: {fileID: 0}
     - target: {fileID: 2088136267437803999, guid: 8c3a235291d86ca4d8a0b940f1bd2a67, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3111,7 +3057,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6164839486022153421, guid: 8c3a235291d86ca4d8a0b940f1bd2a67, type: 3}
       propertyPath: m_Name
-      value: Checkpoint
+      value: 'Checkpoint [Edit]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3126,14 +3072,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1499326696}
     m_Modifications:
-    - target: {fileID: 376457752787039145, guid: db10eca41c5dd0f41aab8f9282f8b3eb, type: 3}
-      propertyPath: associatedCheckpoint
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 427310737448745215, guid: db10eca41c5dd0f41aab8f9282f8b3eb, type: 3}
-      propertyPath: _graph
-      value: 
-      objectReference: {fileID: 11400000, guid: 5cfa74705dbb8884d9dd7374ee8c25a4, type: 2}
     - target: {fileID: 4560848225550734303, guid: db10eca41c5dd0f41aab8f9282f8b3eb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 87.35
@@ -3176,23 +3114,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5769184459578141448, guid: db10eca41c5dd0f41aab8f9282f8b3eb, type: 3}
       propertyPath: m_Name
-      value: Enemy-Melee Variant
-      objectReference: {fileID: 0}
-    - target: {fileID: 5769184459578141448, guid: db10eca41c5dd0f41aab8f9282f8b3eb, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6367715030099969942, guid: db10eca41c5dd0f41aab8f9282f8b3eb, type: 3}
-      propertyPath: animForwardSpeed
-      value: 3
+      value: 'Enemy-Melee Variant [Edit]'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7648102949087538433, guid: db10eca41c5dd0f41aab8f9282f8b3eb, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 799700785}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db10eca41c5dd0f41aab8f9282f8b3eb, type: 3}
 --- !u!4 &1932964979 stripped
 Transform:
