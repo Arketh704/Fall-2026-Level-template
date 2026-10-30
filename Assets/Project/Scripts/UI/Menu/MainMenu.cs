@@ -6,6 +6,7 @@ using UnityEditor;
 using PurrNet;
 using PurrNet.Transports;
 using LevelDesign.Async;
+using LevelDesign.Async.Preferences;
 using System;
 using TMPro;
 
@@ -19,11 +20,12 @@ namespace LevelDesign.UI {
             Lobby
         }
 
-        #region Fields
         [BoxGroup("Scene Refs")]
         public RectTransform imageDivider;
         [BoxGroup("Scene Refs")]
         public RectTransform followUpDivider;
+        [BoxGroup("Scene Refs")]
+        public Transform UserList;
 
         [BoxGroup("Scene Refs/Page Refs")]
         public GameObject mainPage;
@@ -33,6 +35,8 @@ namespace LevelDesign.UI {
         public GameObject hostPage;
         [BoxGroup("Scene Refs/Page Refs")]
         public GameObject lobbyPage;
+        [BoxGroup("Scene Refs/Page Refs")]
+        public GameObject customizationPage;
 
         [BoxGroup("Scene Refs/Network")]
         public PurrTransport transport;
@@ -42,6 +46,8 @@ namespace LevelDesign.UI {
         public TMP_Text lobbyCode;
         [BoxGroup("Scene Refs/Network")]
         public TMP_Text inputText;
+        [BoxGroup("Scene Refs/Network")]
+        public PlayerNameTag playerNamePlate;
 
         [BoxGroup("Scene Refs/Status")]
         public TMP_Text statusText;
@@ -71,16 +77,16 @@ namespace LevelDesign.UI {
 
         private float connectElapsed;
         private bool isConnecting;
-        #endregion
-
 
         #region Unity Calls
         private void OnEnable() {
             networkM.onClientConnectionState += TryTransitionToLobby;
+            networkM.onPlayerJoined += SpawnTag;
         }
 
         private void OnDisable() {
             networkM.onClientConnectionState -= TryTransitionToLobby;
+            networkM.onPlayerJoined -= SpawnTag;
         }
 
         private void Update() {
@@ -109,18 +115,27 @@ namespace LevelDesign.UI {
                 case MenuState.Lobby:
                     lobbyPage.SetActive(true);
                     break;
+                case MenuState.Customization:
+                    customizationPage.SetActive(true);
+                    break;
             }
         }
         #endregion
 
         #region Core
+        private void SpawnTag(PlayerID player, bool isReconnect, bool asServer) {
+            if(!asServer) { return; }
+
+            PlayerNameTag spawned = Instantiate(playerNamePlate, UserList);
+            spawned.GiveOwnership(player);
+        }
         private void TransitionTo(MenuState state) {
             DisableAll();
 
             imageFromY = imageDivider.localScale.y;
             followUpFromY = followUpDivider.localScale.y;
 
-            bool imageExpanded = state == MenuState.Connect || state == MenuState.HostedLobby || state == MenuState.Lobby;
+            bool imageExpanded = state == MenuState.Connect || state == MenuState.HostedLobby || state == MenuState.Lobby || state == MenuState.Customization;
             imageToY = imageExpanded ? imageExpandedScaleY : collapsedScaleY;
             followUpToY = state == MenuState.Lobby || state == MenuState.HostedLobby ? followUpExpandedScaleY : collapsedScaleY;
 
@@ -133,6 +148,7 @@ namespace LevelDesign.UI {
             hostPage.SetActive(false);
             connectPage.SetActive(false);
             lobbyPage.SetActive(false);
+            customizationPage.SetActive(false);
         }
 
         private static void SetScaleY(RectTransform target, float y) {
@@ -211,10 +227,37 @@ namespace LevelDesign.UI {
             TransitionTo(MenuState.Lobby);
         }
 
+        public void TransitionToCustomize()
+        {
+            TransitionTo(MenuState.Customization);
+        }
+
+        [Command("debug_ui_menu_loadscene")]
+        public void LoadNetworkedScene(string sceneName) {
+            if(!networkM.isServer) {
+                ToastController.Instance.Notify("Only The Host Can Load A Scene");
+                return;
+            }
+
+            if(string.IsNullOrEmpty(sceneName)) {
+                ToastController.Instance.Notify("No Scene Name");
+                return;
+            }
+
+            networkM.sceneModule.LoadSceneAsync(sceneName);
+        }
+
         public void ConnectClient() {
             if(isConnecting) { return; }
 
-            transport.roomName = inputText.text;
+            string roomCode = inputText.text.Replace("\u200B", "").Trim();
+
+            if(string.IsNullOrEmpty(roomCode)) {
+                ToastController.Instance.Notify("No Available Code");
+                return;
+            }
+
+            transport.roomName = roomCode;
             ToastController.Instance.Notify("Connecting");
             connectElapsed = 0f;
             isConnecting = true;

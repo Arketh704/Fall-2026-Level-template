@@ -128,8 +128,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 328607378}
-  - component: {fileID: 328607377}
-  - component: {fileID: 328607379}
   - component: {fileID: 328607380}
   m_Layer: 0
   m_Name: Network Manager
@@ -138,32 +136,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &328607377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 328607375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baacc2bfe126d544691d4f39fa3785f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: PurrNet.Runtime::PurrNet.NetworkManager
-  _stopPlayingOnDisconnect: 0
-  _startServerFlags: 0
-  _startClientFlags: 0
-  _cookieScope: 0
-  _dontDestroyOnLoad: 0
-  _transport: {fileID: 328607379}
-  _networkPrefabs: {fileID: 11400000, guid: e5da039fbc040814689e0253643968a0, type: 2}
-  _networkAssets: {fileID: 11400000, guid: da370d5b20465a7488de9892d96164cf, type: 2}
-  _networkRules: {fileID: 11400000, guid: d8799083b96579a42b8b2d03e4ceae98, type: 2}
-  _visibilityRules: {fileID: 11400000, guid: 8f014a5bd8dc68646a2a3c0b18c5bbd8, type: 2}
-  _authenticator: {fileID: 0}
-  _tickRate: 20
-  _mtuExceededBehaviour: 2
-  _patchLingeringProcessBug: 0
 --- !u!4 &328607378
 Transform:
   m_ObjectHideFlags: 0
@@ -179,34 +151,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2129514448}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &328607379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 328607375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 332e746c3c3253246aacad4d5559f1fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: PurrNet.Runtime::PurrNet.Transports.PurrTransport
-  _masterServer: https://purrtransport.purrservers.com/
-  _roomName: 77788eb3ce9949419a2392421a99ca31
-  _region: nj-us
-  _host: purrtransport-nj-us.purrservers.com
-  _timeoutInSeconds: 5
-  _useNat: 1
-  _natResolveTimeout: 8
-  _networkSimulation:
-    includeInBuild: 0
-    simulateLatency: 0
-    minLatency: 30
-    maxLatency: 100
-    simulatePacketLoss: 0
-    packetLossChance: 10
-  _useWebRtcP2P: 0
-  _webRtcStunServer: stun:stun.cloudflare.com:3478
 --- !u!114 &328607380
 MonoBehaviour:
   m_ObjectHideFlags: 0

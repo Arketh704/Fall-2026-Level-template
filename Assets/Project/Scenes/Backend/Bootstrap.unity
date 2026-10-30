@@ -1075,6 +1075,8 @@ GameObject:
   - component: {fileID: 1549321333}
   - component: {fileID: 1549321334}
   - component: {fileID: 1549321335}
+  - component: {fileID: 1549321336}
+  - component: {fileID: 1549321337}
   m_Layer: 0
   m_Name: '[Core] Singletons'
   m_TagString: Untagged
@@ -1137,6 +1139,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.Async.Auth.InputAuthManager
   scriptsRequestingInput: []
   currentlyAuthorized: []
+--- !u!114 &1549321336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549321331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 031349916f22de54a8e5a4699ce0c888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.Async.Preferences.PlayerPreferences
+--- !u!114 &1549321337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1549321331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0e5dd0d133568a4292c36ffc99dbc71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.Async.UserData
 --- !u!1 &1571181584
 GameObject:
   m_ObjectHideFlags: 0
