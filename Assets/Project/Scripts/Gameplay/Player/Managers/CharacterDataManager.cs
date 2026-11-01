@@ -24,11 +24,6 @@ namespace LevelDesign.Systems.Player
         public ArmController currentArmController;
 
         public void Initialize() {
-            // TODO: Strip this code out if there ends up being a character select system
-            // or need for no starting
-            if(currentCharacterObject == null) {
-                LoadCharacterData(fallbackCharacterData);
-            }
         }
 
         public void LoadCharacterData(CharacterDataSO newCharacter){

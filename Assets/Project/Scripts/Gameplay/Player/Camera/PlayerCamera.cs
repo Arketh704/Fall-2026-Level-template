@@ -88,6 +88,11 @@ namespace LevelDesign.Systems.Player
         #endregion
 
         #region Cinematic Helpers
+        public void SnapToTarget(Transform target)
+        {
+            transform.SetPositionAndRotation(target.position, target.rotation);
+        }
+
         public void UpdatePositionSmooth(Transform targetLocation)
         {
             transform.position = Vector3.Lerp(transform.position, targetLocation.position, Time.deltaTime * cinematicPositionSmoothing);

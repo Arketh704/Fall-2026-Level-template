@@ -1,5 +1,6 @@
 using UnityEngine;
 using TinyInspector;
+using LevelDesign.Systems;
 
 namespace LevelDesign.Systems.Player
 {
@@ -45,6 +46,12 @@ namespace LevelDesign.Systems.Player
         private void LocalInit() {
             playerCamera.Initialize(PSM);
             characterDataM.Initialize();
+
+            if(GameManager.Instance != null) {
+                GameManager.Instance.RegisterLocalPlayer(this);
+            } else {
+                Debug.LogWarning("Player could not register: no GameManager in the scene");
+            }
         }
         private void RemoteInit() {
             playerCamera.RemoteInit();
@@ -68,16 +75,17 @@ namespace LevelDesign.Systems.Player
         // Camera Controller
         public void UpdateCameraTarget()
         {
-            if (playerCharacter == null || playerCamera == null)
-                return;
+            if(playerCamera == null) { return; }
 
             if (!PSM.isCinematic)
             {
+                if(playerCharacter == null) { return; }
+
                 spectatorCameraTarget = null;
-                if(playerCharacter != null)
-                {
-                    cameraFocalTarget = playerCharacter._GetCameraTarget();
-                }
+                cameraFocalTarget = playerCharacter._GetCameraTarget();
+
+                if(cameraFocalTarget == null) { return; }
+
                 playerCamera.UpdatePosition(cameraFocalTarget);
             }
             else
@@ -87,11 +95,7 @@ namespace LevelDesign.Systems.Player
                     return;
                 }
 
-                if (spectatorCameraTarget != null)
-                {
-                    playerCamera.UpdatePositionSmooth(spectatorCameraTarget);
-                    playerCamera.UpdateRotationSmooth(spectatorCameraTarget.transform.eulerAngles);
-                }
+                playerCamera.SnapToTarget(spectatorCameraTarget);
             }
         }
 
@@ -140,6 +144,10 @@ namespace LevelDesign.Systems.Player
         #endregion
 
         #region Public Accessors
+        public Transform GetCameraTarget() {
+            return playerCharacter != null ? playerCharacter._GetCameraTarget() : null;
+        }
+
         // Cinematic Controls
         public void SetAndLoadCinematic(Transform cinematicPosition) {
             spectatorCameraTarget = cinematicPosition;

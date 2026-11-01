@@ -5133,11 +5133,11 @@ Transform:
   m_GameObject: {fileID: 524431181}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -447.10175, y: 0.07002, z: -366.98303}
+  m_LocalPosition: {x: -49.143433, y: 0.07, z: 19.97644}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 717240311}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &524431184
 MonoBehaviour:
@@ -5183,7 +5183,7 @@ MonoBehaviour:
   _startServerFlags: 0
   _startClientFlags: 0
   _cookieScope: 0
-  _dontDestroyOnLoad: 0
+  _dontDestroyOnLoad: 1
   _transport: {fileID: 524431184}
   _networkPrefabs: {fileID: 11400000, guid: e5da039fbc040814689e0253643968a0, type: 2}
   _networkAssets: {fileID: 11400000, guid: da370d5b20465a7488de9892d96164cf, type: 2}
@@ -6535,7 +6535,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1973227709}
-  - {fileID: 524431182}
   - {fileID: 591661358}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19839,3 +19838,4 @@ SceneRoots:
   - {fileID: 1609383258}
   - {fileID: 717240311}
   - {fileID: 730703211}
+  - {fileID: 524431182}
