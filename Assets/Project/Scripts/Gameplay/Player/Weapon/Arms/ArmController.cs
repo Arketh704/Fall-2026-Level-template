@@ -13,8 +13,10 @@ namespace LevelDesign.Systems.Player
         public Animator armAnimator;
         [BoxGroup("Scene Refs")]
         public bool isInitialized;
+        [Space]
         [BoxGroup("Scene Refs")]
         public Player player;
+        [BoxGroup("Scene Refs")]
         public _MovementController movementController;
 
         // Movement States

@@ -23,7 +23,8 @@ namespace LevelDesign.Systems.Player
         [BoxGroup("Debug")]
         public ArmController currentArmController;
 
-        public void Initialize() {
+        public void Initialize()
+        {
         }
 
         public void LoadCharacterData(CharacterDataSO newCharacter){

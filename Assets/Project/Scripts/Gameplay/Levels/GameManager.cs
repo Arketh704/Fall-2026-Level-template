@@ -5,6 +5,8 @@ using UnityEngine;
 using TinyInspector;
 using LevelDesign.Tags;
 using PlayerController = LevelDesign.Systems.Player.Player;
+using TMPro;
+using UnityEngine.SocialPlatforms;
 
 namespace LevelDesign.Systems
 {
@@ -17,16 +19,16 @@ namespace LevelDesign.Systems
 
     public class GameManager : NetworkBehaviour
     {
-        [BoxGroup("Config")]
+        [SerializeField] private GameObject gameStartingUI;
+        [SerializeField] private TMP_Text gameCountdownText;
         [SerializeField] private float loadInDuration = 20f;
-        [BoxGroup("Config")]
         [SerializeField] private float matchDuration = 0f;
 
         private readonly SyncVar<GameState> state = new SyncVar<GameState>(GameState.LoadingIn);
         private readonly HashSet<PlayerID> confirmedPlayers = new HashSet<PlayerID>();
         private readonly List<TAG_LoadInLook> looks = new List<TAG_LoadInLook>();
 
-        private GameState localState = GameState.LoadingIn;
+        public GameState localState = GameState.LoadingIn;
         private PlayerController localPlayer;
         private int lookIndex;
         private bool clientSpawned;
@@ -62,6 +64,16 @@ namespace LevelDesign.Systems
 
             if(isSpawned && isServer) {
                 TickServer();
+            }
+
+            if(localState == GameState.LoadingIn)
+            {
+                gameStartingUI.SetActive(true);
+                gameCountdownText.text = (Mathf.RoundToInt(LoadInTimeRemaining).ToString() + "s");
+            }
+            else
+            {
+                gameStartingUI.SetActive(false);
             }
         }
 

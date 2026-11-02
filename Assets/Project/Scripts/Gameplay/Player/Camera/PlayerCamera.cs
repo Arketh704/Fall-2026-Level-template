@@ -83,6 +83,7 @@ namespace LevelDesign.Systems.Player
 
         public void SetRotation(Vector3 angles)
         {
+            eulerAngles = angles;
             transform.eulerAngles = angles;
         }
         #endregion

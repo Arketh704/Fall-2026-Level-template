@@ -7,7 +7,7 @@ namespace LevelDesign.Systems.Player
     public class Player : MonoBehaviour
     {
         [BoxGroup("State Machine")]
-        [SerializeField] private PlayerStateMachine PSM;
+        public PlayerStateMachine PSM;
         [BoxGroup("State Machine")]
         [SerializeField] private LocalPlayerState LPS;
         
@@ -20,7 +20,13 @@ namespace LevelDesign.Systems.Player
         [SerializeField] private ArmController playerArmController;
 
         [BoxGroup("Managers")]
-        [SerializeField] private CharacterDataManager characterDataM;
+        public CharacterDataManager characterDataM;
+        [BoxGroup("Managers")]
+        public RespawnManager respawnM;
+        [BoxGroup("Managers")]
+        public UIManager uiM;
+        [BoxGroup("Managers")]
+        public HealthManager healthM;
 
         private Transform cameraFocalTarget;
         private Transform spectatorCameraTarget;
@@ -34,6 +40,20 @@ namespace LevelDesign.Systems.Player
         private void Update() {
             RoutineChecks();
             ProcessControllers();
+
+            if(!LPS.isLocalPlayer) { return; }
+
+            if(GameManager.Instance != null)
+            {
+                if(GameManager.Instance.localState == GameState.Playing)
+                {
+                    PSM.isPlaying = true;
+                }
+                else
+                {
+                    PSM.isPlaying = false;
+                }
+            }
         }
 
         private void LateUpdate()
@@ -46,6 +66,8 @@ namespace LevelDesign.Systems.Player
         private void LocalInit() {
             playerCamera.Initialize(PSM);
             characterDataM.Initialize();
+            respawnM.Initialize(this, PSM, characterDataM, playerCamera);
+            uiM.Initialize(Player: this);
 
             if(GameManager.Instance != null) {
                 GameManager.Instance.RegisterLocalPlayer(this);
@@ -59,7 +81,6 @@ namespace LevelDesign.Systems.Player
         #endregion
 
         #region Controllers
-        // Both
         public void ProcessControllers() {
             if(playerCamera != null)
             {
@@ -72,7 +93,6 @@ namespace LevelDesign.Systems.Player
             }
         }
 
-        // Camera Controller
         public void UpdateCameraTarget()
         {
             if(playerCamera == null) { return; }
@@ -99,7 +119,6 @@ namespace LevelDesign.Systems.Player
             }
         }
 
-        // Movement
         public void ClearMovement() { }
         #endregion
 
@@ -114,13 +133,11 @@ namespace LevelDesign.Systems.Player
                     }
                 }
                 
-                // Update the Data of the Weapon Manager
                 if(playerCharacter != null) {
                     RigInfo rig = playerCharacter._GetCurrentRigInfo();
                 }
             }
             
-            // Controller Search Using Character Data
             if(characterDataM.currentMovementController != null && LPS.isLocalPlayer) {
                 if(!characterDataM.currentMovementController._isInitialized) {
                     playerCharacter = characterDataM.currentMovementController;
@@ -129,7 +146,6 @@ namespace LevelDesign.Systems.Player
                 }
             }
 
-            // Arm Search using Character Data
             if(characterDataM.currentArmController != null && LPS.isLocalPlayer) {
                 if(!characterDataM.currentArmController.isInitialized) {
                     playerArmController = characterDataM.currentArmController;
@@ -148,7 +164,6 @@ namespace LevelDesign.Systems.Player
             return playerCharacter != null ? playerCharacter._GetCameraTarget() : null;
         }
 
-        // Cinematic Controls
         public void SetAndLoadCinematic(Transform cinematicPosition) {
             spectatorCameraTarget = cinematicPosition;
             PSM.isCinematic = true;

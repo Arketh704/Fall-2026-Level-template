@@ -5,7 +5,10 @@ namespace LevelDesign.Systems.Player
     public class PlayerStateMachine : MonoBehaviour
     {
         public bool isDead;
+        public bool awaitingRespawn;
         public bool isCinematic;
+
+        public bool isPlaying;
         
         public bool overrideInput;
 

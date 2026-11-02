@@ -17,6 +17,9 @@ namespace LevelDesign.Systems.Player
         [BoxGroup("Scene Refs")]
         [SerializeField] private ArmController armController;
 
+        [BoxGroup("Debug")]
+        public Player player => armController.player;
+
         const int BurstCount = 3;
         const float TwoPi = Mathf.PI * 2f;
 
@@ -115,7 +118,6 @@ namespace LevelDesign.Systems.Player
 
         public void Reload()
         {
-            CurrentAmmo = data.maxAmmo;
             armController.armAnimator.SetTrigger("Reload");
             reloadStartTime = Time.time;
             isReloading = true;
@@ -166,6 +168,7 @@ namespace LevelDesign.Systems.Player
 
             if(isReloading && (Time.time >= reloadStartTime + data.reloadTime))
             {
+                CurrentAmmo = data.maxAmmo;
                 isReloading = false;
             }
 
@@ -173,12 +176,19 @@ namespace LevelDesign.Systems.Player
             UpdateCameraRecoil(t_dt);
             UpdateViewModel(t_dt);
 
+            UpdateGUI();
+
             if(!_inputAuthorized) { return; }
             SetTrigger(_input.Fire.IsPressed());
             SetLook(_input.Look.ReadValue<Vector2>());
             if(_input.Reload.WasPressedThisFrame()) { Reload(); }
         }
         #endregion
+
+        void UpdateGUI()
+        {
+            player.uiM.ammoText.text = CurrentAmmo.ToString() + "/" + data.maxAmmo;
+        }
 
         #region Firing
         void HandleFiring()
