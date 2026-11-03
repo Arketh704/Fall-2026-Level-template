@@ -39,9 +39,9 @@ namespace LevelDesign.UI {
         public GameObject customizationPage;
 
         [BoxGroup("Scene Refs/Network")]
-        public PurrTransport transport;
+        [HideInInspector] public PurrTransport transport;
         [BoxGroup("Scene Refs/Network")]
-        public NetworkManager networkM;
+        [HideInInspector] public NetworkManager networkM;
         [BoxGroup("Scene Refs/Network")]
         public TMP_Text lobbyCode;
         [BoxGroup("Scene Refs/Network")]
@@ -80,16 +80,22 @@ namespace LevelDesign.UI {
 
         #region Unity Calls
         private void OnEnable() {
+            ResolveNetwork();
+
             networkM.onClientConnectionState += TryTransitionToLobby;
             networkM.onPlayerJoined += SpawnTag;
         }
 
         private void OnDisable() {
+            if(networkM == null) { return; }
+
             networkM.onClientConnectionState -= TryTransitionToLobby;
             networkM.onPlayerJoined -= SpawnTag;
         }
 
         private void Update() {
+            if(networkM == null) { return; }
+
             ManageStats();
             UpdateConnectTimeout();
 
@@ -123,12 +129,18 @@ namespace LevelDesign.UI {
         #endregion
 
         #region Core
+        private void ResolveNetwork() {
+            networkM = NetworkManager.main;
+            transport = networkM.transport as PurrTransport;
+        }
+
         private void SpawnTag(PlayerID player, bool isReconnect, bool asServer) {
             if(!asServer) { return; }
 
             PlayerNameTag spawned = Instantiate(playerNamePlate, UserList);
             spawned.GiveOwnership(player);
         }
+
         private void TransitionTo(MenuState state) {
             DisableAll();
 
@@ -227,8 +239,7 @@ namespace LevelDesign.UI {
             TransitionTo(MenuState.Lobby);
         }
 
-        public void TransitionToCustomize()
-        {
+        public void TransitionToCustomize() {
             TransitionTo(MenuState.Customization);
         }
 

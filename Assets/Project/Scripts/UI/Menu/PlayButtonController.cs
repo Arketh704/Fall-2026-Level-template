@@ -4,22 +4,25 @@ using PurrNet.Transports;
 using TinyInspector;
 using Evo.UI;
 
-namespace LevelDesign.UI
-{
-    public class PlayButtonController : MonoBehaviour
-    {
+namespace LevelDesign.UI {
+    public class PlayButtonController : MonoBehaviour {
         [BoxGroup("Scene Refs")]
         [SerializeField] private Evo.UI.Button interactableButton;
-        [BoxGroup("Scene Refs")]
-        [SerializeField] private NetworkManager networkM;
+        private NetworkManager networkM;
+
+        #region Unity Calls
+        private void OnEnable() {
+            networkM = NetworkManager.main;
+        }
 
         private void FixedUpdate() {
-            if(networkM.clientState == ConnectionState.Connected) {
-                interactableButton.SetInteractable(true);
+            if(networkM == null) {
+                networkM = NetworkManager.main;
+                if(networkM == null) { return; }
             }
-            else {
-                interactableButton.SetInteractable(false);
-            }
+
+            interactableButton.SetInteractable(networkM.clientState == ConnectionState.Connected);
         }
+        #endregion
     }
 }
