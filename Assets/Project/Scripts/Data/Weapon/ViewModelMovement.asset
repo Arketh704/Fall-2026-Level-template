@@ -27,10 +27,10 @@ MonoBehaviour:
   breathAmount: 0.003
   breathSpeed: 0.35
   airTiltPerSpeed: 0.5
-  airTiltMax: 6
+  airTiltMax: 3
   airTiltSmooth: 6
   airOffset: 0.015
-  landKickPerSpeed: 0.08
+  landKickPerSpeed: 0.03
   landDrop: 0.03
   landPitch: 4
   landSnappiness: 18
@@ -39,8 +39,8 @@ MonoBehaviour:
   kickPitch: 2
   kickSnappiness: 25
   kickReturn: 10
-  recoilUp: 2
-  recoilSide: 0.5
+  recoilUp: 3
+  recoilSide: 1
   sideRampShots: 1
   sprayResetTime: 0.25
   recoilSnappiness: 20

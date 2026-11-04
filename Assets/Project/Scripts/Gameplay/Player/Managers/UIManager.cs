@@ -98,6 +98,9 @@ namespace LevelDesign.Systems.Player
             {
                 deathPage.SetActive(true);
             }
+            
+            string outputText = Mathf.RoundToInt(player.respawnM.deathTimeRemaining).ToString();
+            countdownText.text = outputText;
         }
         #endregion
 

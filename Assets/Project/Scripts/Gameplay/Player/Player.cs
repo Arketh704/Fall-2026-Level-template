@@ -16,7 +16,7 @@ namespace LevelDesign.Systems.Player
         [Space]
         [BoxGroup("Controllers")]
         [SerializeField] private _MovementController playerCharacter;
-        [BoxGroup("Controlelrs")]
+        [BoxGroup("Controllers")]
         [SerializeField] private ArmController playerArmController;
 
         [BoxGroup("Managers")]
@@ -27,6 +27,8 @@ namespace LevelDesign.Systems.Player
         public UIManager uiM;
         [BoxGroup("Managers")]
         public HealthManager healthM;
+        [BoxGroup("Managers")]
+        public StackManager StackM;
 
         private Transform cameraFocalTarget;
         private Transform spectatorCameraTarget;
@@ -60,12 +62,24 @@ namespace LevelDesign.Systems.Player
         {
             UpdateCameraTarget();
         }
+
+        private void OnDestroy()
+        {
+            healthM.Died -= OnDeath;
+        }
         #endregion
 
         #region Initializations
         private void LocalInit() {
+            if(StackM == null) {
+                StackM = GetComponentInChildren<StackManager>();
+            }
+
+            healthM.Died += OnDeath;
+
             playerCamera.Initialize(PSM);
             characterDataM.Initialize();
+            healthM.Initialize(StackM);
             respawnM.Initialize(this, PSM, characterDataM, playerCamera);
             uiM.Initialize(Player: this);
 
@@ -142,6 +156,7 @@ namespace LevelDesign.Systems.Player
                 if(!characterDataM.currentMovementController._isInitialized) {
                     playerCharacter = characterDataM.currentMovementController;
 
+                    playerCharacter._BindStacks(StackM);
                     playerCharacter._Initialize(PSM, characterDataM.currentCharacterData);
                 }
             }
@@ -157,9 +172,17 @@ namespace LevelDesign.Systems.Player
                 }
             }
         }
+
+        public void OnDeath()
+        {
+            characterDataM.ClearCharacter();
+            respawnM.StartDeathTimer();
+        }
         #endregion
 
         #region Public Accessors
+        public bool IsLocalPlayer => LPS != null && LPS.isLocalPlayer;
+
         public Transform GetCameraTarget() {
             return playerCharacter != null ? playerCharacter._GetCameraTarget() : null;
         }

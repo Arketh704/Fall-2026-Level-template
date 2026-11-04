@@ -82,7 +82,7 @@ namespace LevelDesign.Systems.Player
         {
             if (m_Controller != null)
             {
-                characterStance = m_Controller.stanceMirror;
+                characterStance = m_Controller._stanceMirror;
             }
 
             switch (characterStance)

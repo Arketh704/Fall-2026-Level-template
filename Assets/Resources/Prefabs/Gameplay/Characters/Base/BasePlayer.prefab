@@ -1862,6 +1862,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 94626c6ac74e807459347e352097f248, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7251857437317918971}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 94626c6ac74e807459347e352097f248, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1555919862485670658}
   m_SourcePrefab: {fileID: 100100000, guid: 94626c6ac74e807459347e352097f248, type: 3}
 --- !u!4 &2246278946414311259 stripped
 Transform:
@@ -2475,6 +2478,30 @@ MonoBehaviour:
   - m_Rig: {fileID: 2624487915334516034}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &1555919862485670658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4339857071132928693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab4e5b45701b33246a704d8a51543b50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.Async.AnimatorTriggerSync
+  _networkRules: {fileID: 0}
+  _visitiblityRules: {fileID: 0}
+  _isSetup: 0
+  _prefabId: -2147483648
+  _hasPrefabScope: 0
+  _prefabScope: 0
+  _componentIndex: -2147483648
+  _shouldBePooled: 0
+  _parent: {fileID: 0}
+  _invertedPathToNearestParent: 
+  _directChildren: []
+  animator: {fileID: 7030604431822809717}
 --- !u!4 &5197438922880668806 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -515046451814726814, guid: 94626c6ac74e807459347e352097f248, type: 3}

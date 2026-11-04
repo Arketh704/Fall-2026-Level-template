@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using LevelDesign.Data;
 using LevelDesign.Async.Auth;
+using LevelDesign.Async;
 using LevelDesign.Tags;
 using LevelDesign.Systems.Player;
 using TinyInspector;
@@ -16,7 +17,16 @@ namespace LevelDesign.Systems.Player
         [SerializeField] private Transform viewModel;
         [BoxGroup("Scene Refs")]
         [SerializeField] private ArmController armController;
+        [BoxGroup("Scene Refs")]
+        [SerializeField] private Transform aimOrigin;
 
+        [BoxGroup("Damage")]
+        [SerializeField] private float damage = 10f;
+        [BoxGroup("Damage")]
+        [SerializeField] private float range = 200f;
+        [BoxGroup("Damage")]
+        [SerializeField] private LayerMask hitMask = ~0;
+        
         [BoxGroup("Debug")]
         public Player player => armController.player;
 
@@ -47,6 +57,7 @@ namespace LevelDesign.Systems.Player
         float lastShotTime = float.NegativeInfinity;
         int shotIndex;
         int burstRemaining;
+        RaycastHit[] hitBuffer = new RaycastHit[16];
         
         // Reload
         bool isReloading;
@@ -78,6 +89,8 @@ namespace LevelDesign.Systems.Player
         // Camera recoil
         Transform recoilPivot;
         Vector2 recoilTarget, recoilCurrent;
+
+        private AnimatorTriggerSync triggerSync;
 
         #region Public API
         public void SetTrigger(bool held)
@@ -116,12 +129,27 @@ namespace LevelDesign.Systems.Player
                 : 0f;
         }
 
+        // The Spaghetti Here is top 10 Worst for me, it's almost a celebration
         public void Reload()
         {
+            if(isReloading) { return; }
+            if(CurrentAmmo >= data.maxAmmo) { return; }
+            if(!HasReserveAmmo) { return; }
+
             armController.armAnimator.SetTrigger("Reload");
             reloadStartTime = Time.time;
+
+            player.characterDataM.currentMovementController._GetCurrentRigInfo().characterAnimator.SetTrigger("Reload");
+            
+            if(!triggerSync) { 
+                triggerSync = player.characterDataM.currentMovementController.GetComponentInChildren<AnimatorTriggerSync>();
+            }
+            if(triggerSync) { 
+                triggerSync.SendTrigger("Reload");
+            }
+
             isReloading = true;
-        } 
+        }
         #endregion
 
         #region Unity
@@ -163,13 +191,12 @@ namespace LevelDesign.Systems.Player
             float t_dt = Time.deltaTime;
 
             if(movementSource) {
-                SetMotionState(movementSource._GetVelocity(), movementSource.stanceMirror, movementSource._GetWalkSpeed());
+                SetMotionState(movementSource._GetVelocity(), movementSource._stanceMirror, movementSource._GetWalkSpeed());
             }
 
             if(isReloading && (Time.time >= reloadStartTime + data.reloadTime))
             {
-                CurrentAmmo = data.maxAmmo;
-                isReloading = false;
+                FinishReload();
             }
 
             HandleFiring();
@@ -187,8 +214,37 @@ namespace LevelDesign.Systems.Player
 
         void UpdateGUI()
         {
+            StackManager stacks = Stacks;
+            string reserve;
+
+            if(stacks == null) {
+                reserve = data.maxAmmo.ToString();
+            } else if(stacks.IsUnlimited(StackType.Ammo)) {
+                reserve = "∞";
+            } else {
+                reserve = stacks.Get(StackType.Ammo).ToString();
+            }
+
             player.uiM.ammoText.text = CurrentAmmo.ToString() + "/" + data.maxAmmo;
         }
+
+        #region Ammo
+        StackManager Stacks => armController != null && armController.player != null ? armController.player.StackM : null;
+        bool HasReserveAmmo => Stacks == null || Stacks.Has(StackType.Ammo);
+
+        public int ReserveMags => Stacks != null ? Stacks.Get(StackType.Ammo) : 0;
+        public bool IsReloading => isReloading;
+
+        // Each Ammo stack is one spare magazine. Without a StackManager reloads are free, so the weapon still works outside a Player.
+        void FinishReload() {
+            isReloading = false;
+
+            StackManager stacks = Stacks;
+            if(stacks != null && !stacks.TryConsume(StackType.Ammo)) { return; }
+
+            CurrentAmmo = data.maxAmmo;
+        }
+        #endregion
 
         #region Firing
         void HandleFiring()
@@ -228,7 +284,38 @@ namespace LevelDesign.Systems.Player
             recoilTarget += Motion.GetRecoil(shotIndex++);
             kickTarget = 1f;
 
+            ApplyHit();
+
             Fired?.Invoke();
+        }
+
+        // The closest hit that isn't the shooter wins, so walls and props block shots before they reach a Hurtbox.
+        void ApplyHit() {
+            Transform origin = aimOrigin ? aimOrigin : recoilPivot;
+            if(!origin) { return; }
+
+            Player shooter = armController != null ? armController.player : null;
+            int hitCount = Physics.RaycastNonAlloc(origin.position, origin.forward, hitBuffer, range, hitMask, QueryTriggerInteraction.Collide);
+
+            Collider closest = null;
+            float closestDistance = float.MaxValue;
+
+            for(int i = 0; i < hitCount; i++) {
+                RaycastHit hit = hitBuffer[i];
+                bool isShooter = shooter && hit.collider.GetComponentInParent<Player>() == shooter;
+
+                if(!isShooter && hit.distance < closestDistance) {
+                    closest = hit.collider;
+                    closestDistance = hit.distance;
+                }
+            }
+
+            if(!closest) { return; }
+
+            Hurtbox hurtbox = closest.GetComponentInParent<Hurtbox>();
+            if(!hurtbox) { return; }
+
+            hurtbox.Trigger(damage, true);
         }
         #endregion
 

@@ -49,7 +49,6 @@ namespace LevelDesign.Systems.Player
             }
         }
 
-        /// Hooks every Weapon under root up to the current movement controller (bob, air tilt, landing).
         public void BindWeapons(GameObject root) {
             if(root == null) { return; }
             foreach(var t_weapon in root.GetComponentsInChildren<Weapon>(true)) {
@@ -57,12 +56,11 @@ namespace LevelDesign.Systems.Player
             }
         }
 
-        /// Call this for weapons spawned/equipped after the character loads.
         public void BindWeapon(Weapon weapon) {
             if(weapon != null) { weapon.BindMovement(currentMovementController); }
         }
 
-        private void ClearCharacter() {
+        public void ClearCharacter() {
             currentCharacterData = null;
             currentMovementController = null;
 

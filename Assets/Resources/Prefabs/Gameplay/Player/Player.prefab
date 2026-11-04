@@ -868,9 +868,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7ab3e3f23cc10b429ca9c82e2af6f78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.HealthManager
+  _networkRules: {fileID: 0}
+  _visitiblityRules: {fileID: 0}
+  _isSetup: 0
+  _prefabId: -2147483648
+  _hasPrefabScope: 0
+  _prefabScope: 0
+  _componentIndex: -2147483648
+  _shouldBePooled: 0
+  _parent: {fileID: 0}
+  _invertedPathToNearestParent: 
+  _directChildren: []
   currentHealth: 100
   maxHealth: 100
-  lives: 5
 --- !u!1 &2103278854767567377
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,9 +1215,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 926b508bfeb0339478bded1f02a0a27f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.RespawnManager
+  deathLength: 5
   characterData: {fileID: 11400000, guid: 906f7fd1d9d7de141bafedc6262ac5c7, type: 2}
   PSM: {fileID: 6304618298330792376}
   activePoint: {fileID: 0}
+  deathTimeRemaining: 0
 --- !u!1 &2534673805766626248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1357,6 +1369,7 @@ GameObject:
   - component: {fileID: 5162667031735379431}
   - component: {fileID: 5668664895655829176}
   - component: {fileID: 4346433220923531660}
+  - component: {fileID: 8806969933255689045}
   m_Layer: 0
   m_Name: ww
   m_TagString: Untagged
@@ -1458,6 +1471,21 @@ MonoBehaviour:
   TransformRotation: {x: 0, y: 0, z: 0, w: 1}
   TransformScale: {x: 1.7071, y: 1.7071, z: 1.7071}
   TransformRectSize: {x: 100, y: 100}
+--- !u!114 &8806969933255689045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2747879638023690276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da98521bf1d42b14a848f18af69a1d81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.UI.StackDisplay
+  text: {fileID: 6487487055984695597}
+  stacks: {fileID: 7691106187163141793}
+  type: 3
 --- !u!1 &2876083063537106757
 GameObject:
   m_ObjectHideFlags: 0
@@ -2408,6 +2436,67 @@ MonoBehaviour:
   referencesFoldout: 1
   settingsFoldout: 1
   interactionFoldout: 1
+--- !u!1 &4160686766508808718
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3169346910982276932}
+  - component: {fileID: 7691106187163141793}
+  m_Layer: 0
+  m_Name: StackManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3169346910982276932
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4160686766508808718}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2189374374074111396}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7691106187163141793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4160686766508808718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2d28f9bac592943aa133eef49835c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.Stacks.StackManager
+  slots:
+  - Type: 0
+    StartAmount: 2
+    Unlimited: 0
+    Current: 0
+  - Type: 1
+    StartAmount: 2
+    Unlimited: 0
+    Current: 0
+  - Type: 2
+    StartAmount: 3
+    Unlimited: 0
+    Current: 0
+  - Type: 3
+    StartAmount: 5
+    Unlimited: 0
+    Current: 0
 --- !u!1 &4162500821624962019
 GameObject:
   m_ObjectHideFlags: 0
@@ -3645,6 +3734,7 @@ Transform:
   - {fileID: 1966786708181342122}
   - {fileID: 4157331193576688583}
   - {fileID: 4095546190365930772}
+  - {fileID: 3169346910982276932}
   m_Father: {fileID: 8708295356097053374}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6290277690308875893
@@ -4275,6 +4365,7 @@ GameObject:
   - component: {fileID: 234275747453698995}
   - component: {fileID: 7325373483549287219}
   - component: {fileID: 3404890943755976198}
+  - component: {fileID: 3942296446038406554}
   m_Layer: 0
   m_Name: StackIndicator
   m_TagString: Untagged
@@ -4376,6 +4467,21 @@ MonoBehaviour:
   TransformRotation: {x: 0, y: 0, z: 0, w: 1}
   TransformScale: {x: 1.7071, y: 1.7071, z: 1.7071}
   TransformRectSize: {x: 100, y: 100}
+--- !u!114 &3942296446038406554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7082480987263728947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da98521bf1d42b14a848f18af69a1d81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.UI.StackDisplay
+  text: {fileID: 959130172113218601}
+  stacks: {fileID: 7691106187163141793}
+  type: 1
 --- !u!1 &7085789200087082186
 GameObject:
   m_ObjectHideFlags: 0
@@ -4640,6 +4746,7 @@ GameObject:
   - component: {fileID: 670029351572678605}
   - component: {fileID: 3562371615056883097}
   - component: {fileID: 8872380252041833266}
+  - component: {fileID: 3413702819863458787}
   m_Layer: 0
   m_Name: StackIndicator
   m_TagString: Untagged
@@ -4741,6 +4848,21 @@ MonoBehaviour:
   TransformRotation: {x: 0, y: 0, z: 0, w: 1}
   TransformScale: {x: 1.7071, y: 1.7071, z: 1.7071}
   TransformRectSize: {x: 100, y: 100}
+--- !u!114 &3413702819863458787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7575420591936425324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da98521bf1d42b14a848f18af69a1d81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.UI.StackDisplay
+  text: {fileID: 6759165981830947767}
+  stacks: {fileID: 7691106187163141793}
+  type: 0
 --- !u!1 &7640566142768903734
 GameObject:
   m_ObjectHideFlags: 0
@@ -4870,6 +4992,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8782918453247012747}
   - component: {fileID: 227109891779450772}
+  - component: {fileID: 9093347882931105136}
   m_Layer: 0
   m_Name: LifeStacks
   m_TagString: Untagged
@@ -4933,6 +5056,21 @@ MonoBehaviour:
   TransformRotation: {x: 0, y: 0, z: 0, w: 1}
   TransformScale: {x: 0.2, y: 0.2, z: 1}
   TransformRectSize: {x: 0, y: 0}
+--- !u!114 &9093347882931105136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8061543580173798634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da98521bf1d42b14a848f18af69a1d81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.UI.StackDisplay
+  text: {fileID: 3198531251117646310}
+  stacks: {fileID: 7691106187163141793}
+  type: 2
 --- !u!1 &8279576159403431685
 GameObject:
   m_ObjectHideFlags: 0
@@ -5680,6 +5818,7 @@ MonoBehaviour:
   respawnM: {fileID: 3503544873390187050}
   uiM: {fileID: 667318035569876561}
   healthM: {fileID: 4910343612734726997}
+  StackM: {fileID: 7691106187163141793}
 --- !u!114 &6304618298330792376
 MonoBehaviour:
   m_ObjectHideFlags: 0

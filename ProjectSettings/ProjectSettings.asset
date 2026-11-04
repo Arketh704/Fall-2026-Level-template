@@ -841,7 +841,7 @@ PlayerSettings:
     PS4: EVO_UI
     PS5: EVO_UI
     QNX: EVO_UI
-    Standalone: EVO_UI
+    Standalone: EVO_UI;ALLIN1_URP
     VisionOS: EVO_UI
     WebGL: EVO_UI
     Windows Store Apps: EVO_UI

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2216568166815682649}
   - component: {fileID: 1580712166956997481}
   - component: {fileID: 461546148949282741}
+  - component: {fileID: 7621385553523476136}
   - component: {fileID: 4087413322903648804}
   m_Layer: 0
   m_Name: PlayerController
@@ -118,9 +119,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b5d64018384c43942b1297cf6c3d8072, type: 2}
   _inputAuthorized: 0
   _visualSpawnPoint: {fileID: 3720925930198757410}
+  _hurtbox: {fileID: 7621385553523476136}
   _characterData: {fileID: 0}
   _isInitialized: 0
-  stanceMirror: 0
+  _stanceMirror: 0
   motor: {fileID: 1580712166956997481}
   cameraTarget: {fileID: 2328793463789704417}
   groundResponse: 10
@@ -146,6 +148,18 @@ MonoBehaviour:
   debugStance: 0
   debugSprinting: 0
   currentRigInfo: {fileID: 0}
+--- !u!114 &7621385553523476136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690920788537224524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6933b8cd0eba2b46b29b350f41db71b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.Systems.Player.Hitbox
 --- !u!114 &4087413322903648804
 MonoBehaviour:
   m_ObjectHideFlags: 0

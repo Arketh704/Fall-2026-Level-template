@@ -1,4 +1,5 @@
 ﻿<Solution>
+  <Project Path="AllIn1SharedExtensionsAssembly.Editor.csproj" />
   <Project Path="Evo.UI.Editor.csproj" />
   <Project Path="Flexalon.Editor.csproj" />
   <Project Path="PurrNet.Runtime.csproj" />
@@ -12,12 +13,18 @@
   <Project Path="QFSW.QC.Editor.csproj" />
   <Project Path="Evo.UI.csproj" />
   <Project Path="QFSW.QC.Parsers.csproj" />
+  <Project Path="AllIn1VfxToolkitAssembly.Editor.csproj" />
   <Project Path="Yasinski.SimpleFolders.Colorizer.Editor.csproj" />
   <Project Path="Unity.PurrNet.Codegen.csproj" />
+  <Project Path="AllIn1SharedExtensionsAssembly.csproj" />
   <Project Path="Flexalon.csproj" />
+  <Project Path="AllIn1VfxToolkitAssembly.csproj" />
+  <Project Path="AllIn1VfxDemoScriptAssemblies.csproj" />
   <Project Path="SimpleWebTransport.csproj" />
   <Project Path="LiteNetLib.csproj" />
+  <Project Path="AllIn1SharedAssembly.Editor.csproj" />
   <Project Path="ParrelSync.csproj" />
+  <Project Path="AllIn1SharedAssembly.csproj" />
   <Project Path="PurrNet.Edgegap.Runtime.csproj" />
   <Project Path="PurrNet.UTP.Runtime.csproj" />
   <Project Path="Evo.Editor.csproj" />
@@ -25,6 +32,7 @@
   <Project Path="QFSW.QC.Serializers.csproj" />
   <Project Path="QFSW.QC.Suggestors.csproj" />
   <Project Path="QFSW.QC.QGUI.csproj" />
+  <Project Path="AllIn1VfxTexDemoAssembly.csproj" />
   <Project Path="PurrNet.DeltaPackerAnalysis.Editor.csproj" />
   <Project Path="PurrNet.Steam.Runtime.csproj" />
   <Project Path="QFSW.QC.UI.csproj" />

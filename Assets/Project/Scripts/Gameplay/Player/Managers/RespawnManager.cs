@@ -13,12 +13,17 @@ namespace LevelDesign
     {
         #region Fields
         [BoxGroup("Config")]
+        [SerializeField] private float deathLength;
+
+        [BoxGroup("Scene Refs")]
         [SerializeField] private CharacterDataSO characterData;
 
         [BoxGroup("Debug")]
         public PlayerStateMachine PSM;
         [BoxGroup("Debug")]
         [SerializeField] private RespawnPoint activePoint;
+        [BoxGroup("Debug")]
+        public float deathTimeRemaining;
 
         private Player player;
         private PlayerCamera playerCamera;
@@ -26,6 +31,22 @@ namespace LevelDesign
         private Coroutine spawnRoutine;
 
         public event Action<RespawnPoint> OnConfirmed;
+        #endregion
+
+        #region Unity
+        private void Update()
+        {
+            if(PSM.isDead)
+            {
+                deathTimeRemaining -= Time.deltaTime;
+
+                if(deathTimeRemaining <= 0f) { 
+                    PSM.isDead = false;
+                    PSM.awaitingRespawn = true;
+                    player.healthM.ResetHealth();
+                }
+            }
+        }
         #endregion
 
         #region Core
@@ -62,6 +83,12 @@ namespace LevelDesign
             OnConfirmed?.Invoke(point);
 
             spawnRoutine = null;
+        }
+
+        public void StartDeathTimer()
+        {
+            deathTimeRemaining = deathLength;
+            PSM.isDead = true;
         }
 
         private Quaternion GetFlatRotation(Transform point) {

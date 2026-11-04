@@ -44,7 +44,7 @@ namespace LevelDesign.Systems.Player
 
         private void UpdateStanceState()
         {
-            var stance = movementController.stanceMirror;
+            var stance = movementController._stanceMirror;
 
             if(stance == lastStance) return;
             lastStance = stance;

@@ -131,7 +131,7 @@ namespace LevelDesign.Systems.Player
 
             playerCamera = playerCam;
 
-            stanceMirror = state.Stance;
+            _stanceMirror = state.Stance;
 
             UpdateCameraYaw();
             UpdateInput();
@@ -287,7 +287,7 @@ namespace LevelDesign.Systems.Player
                 {
                     UpdateSlide(ref currentVelocity, groundedMovement, deltaTime);
                 }
-                else if(CanStartSlide(currentVelocity, groundedMovement))
+                else if(CanStartSlide(currentVelocity, groundedMovement) && _TryUseStack(StackType.Slide))
                 {
                     StartSlide(ref currentVelocity);
                 }
@@ -343,7 +343,7 @@ namespace LevelDesign.Systems.Player
             {
                 requestedJump = false;
 
-                if(currentJumpCount <= maxAerialJumps)
+                if(currentJumpCount <= maxAerialJumps && (grounded || _TryUseStack(StackType.DoubleJump)))
                 {
                     motor.ForceUnground();
                     currentJumpCount++;
@@ -412,8 +412,7 @@ namespace LevelDesign.Systems.Player
         {
             state.Grounded = motor.GroundingStatus.IsStableOnGround;
             state.Velocity = motor.Velocity;
-            // Mirror here too so stance and velocity always come from the same motor tick
-            stanceMirror = state.Stance;
+            _stanceMirror = state.Stance;
             debugStance = state.Stance;
             debugSprinting = isSprinting;
         }
