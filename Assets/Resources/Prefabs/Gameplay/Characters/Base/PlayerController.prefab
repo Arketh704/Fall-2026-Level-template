@@ -36,6 +36,7 @@ Transform:
   m_Children:
   - {fileID: 2328793463789704417}
   - {fileID: 3720925930198757410}
+  - {fileID: 8999377959152113119}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &2216568166815682649
@@ -125,6 +126,8 @@ MonoBehaviour:
   _stanceMirror: 0
   motor: {fileID: 1580712166956997481}
   cameraTarget: {fileID: 2328793463789704417}
+  particleSpawnPoint: {fileID: 8999377959152113119}
+  jumpParticle: {fileID: 1015484155540287969, guid: e8ccc75c0fce85a43b46df58108d44f8, type: 3}
   groundResponse: 10
   gravity: -50
   standHeight: 2
@@ -194,6 +197,37 @@ MonoBehaviour:
   _ownerAuth: 1
   _interpolationTiming: 0
   _adaptiveSynchronization: 2
+--- !u!1 &2349938168452101512
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8999377959152113119}
+  m_Layer: 0
+  m_Name: ParticleSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8999377959152113119
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2349938168452101512}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5036558211294862702}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4319877030948924377
 GameObject:
   m_ObjectHideFlags: 0

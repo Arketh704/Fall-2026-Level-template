@@ -134,7 +134,7 @@ Material:
     - _FadeAmount: -0.1
     - _FadeBurnGlow: 5
     - _FadeBurnWidth: 0.01
-    - _FadePower: 1
+    - _FadePower: 2.13
     - _FadeScrollXSpeed: 0
     - _FadeScrollYSpeed: 0
     - _FadeTransition: 0.287
@@ -233,7 +233,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BackFaceTint: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.48235294}
     - _ColorGradingDark: {r: 1, g: 1, b: 1, a: 1}
     - _ColorGradingLight: {r: 1, g: 1, b: 1, a: 1}
     - _ColorGradingMiddle: {r: 1, g: 1, b: 1, a: 1}
@@ -243,7 +243,8 @@ Material:
     - _GlowColor: {r: 1, g: 1, b: 1, a: 1}
     - _LightColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Shape2Color: {r: 11.984314, g: 3.9529412, b: 0, a: 1}
+    - _Shape2Color: {r: 0.9056606, g: 0.9056606, b: 0.9056606, a: 1}
     - _Shape3Color: {r: 1, g: 1, b: 1, a: 1}
-    - _ShapeColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShapeColor: {r: 1, g: 1, b: 1, a: 0.42745098}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6173056529085735513}
   - component: {fileID: 2898993836529507724}
   - component: {fileID: 7283587296627944351}
+  - component: {fileID: 6773780001477273847}
   m_Layer: 0
   m_Name: DoubleJumpPoof
   m_TagString: Untagged
@@ -43,7 +44,7 @@ ParticleSystem:
   m_GameObject: {fileID: 1015484155540287969}
   serializedVersion: 8
   lengthInSec: 3
-  simulationSpeed: 1
+  simulationSpeed: 2
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -224,7 +225,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.48235294, g: 0.16433603, b: 0, a: 1}
-      maxColor: {r: 0.269, g: 0.269, b: 0.269, a: 1}
+      maxColor: {r: 0.269, g: 0.269, b: 0.269, a: 0.53333336}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1040,7 +1041,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 0
-      minScalar: 0.5
+      minScalar: 0.35
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4950,3 +4951,16 @@ MonoBehaviour:
   _ownerAuth: 1
   _interpolationTiming: 0
   _adaptiveSynchronization: 2
+--- !u!114 &6773780001477273847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015484155540287969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d36d79fca76fabd48bff0c612fa0a5b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelDesign.Despawn
+  despawnTime: 6

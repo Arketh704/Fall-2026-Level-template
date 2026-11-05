@@ -21,6 +21,11 @@ namespace LevelDesign.Systems.Player
         [SerializeField] private KinematicCharacterMotor motor;
         [BoxGroup("Scene Refs")]
         [SerializeField] private Transform cameraTarget;
+        [BoxGroup("Scene Refs")]
+        [SerializeField] private Transform particleSpawnPoint;
+        
+        [BoxGroup("Particles")]
+        [SerializeField] private GameObject jumpParticle;
 
         [TabGroup("Controller", "Config")]
         [SerializeField] private float groundResponse = 25f;
@@ -339,12 +344,14 @@ namespace LevelDesign.Systems.Player
                 currentVelocity += motor.CharacterUp * gravity * deltaTime;
             }
 
-            if(requestedJump)
-            {
+            if(requestedJump) {
                 requestedJump = false;
 
-                if(currentJumpCount <= maxAerialJumps && (grounded || _TryUseStack(StackType.DoubleJump)))
-                {
+                if(grounded || _TryUseStack(StackType.DoubleJump)) {
+                    if(!state.Grounded) {
+                        Instantiate(jumpParticle, particleSpawnPoint.position, particleSpawnPoint.rotation);
+                    }
+
                     motor.ForceUnground();
                     currentJumpCount++;
 
