@@ -8,8 +8,8 @@ NativeFormatImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
-  productId: 206665
-  packageName: All In 1 Vfx Toolkit
-  packageVersion: 2.4
+  productId: 316173
+  packageName: All In 1 3D-Shader
+  packageVersion: 2.8
   assetPath: Assets/Plugins/AllIn1Assets/AllIn1Shared/AllIn1SharedExtensions/Editor/ShadersConfigurator/EffectsGroups/EffectGroupGlobalConfigCollection.asset
-  uploadId: 1035270
+  uploadId: 1035260

@@ -17,6 +17,7 @@ namespace LevelDesign.Systems
         public event Action Died;
         public event Action Revived;
         public event Action Eliminated;
+        public event Action<float> Damaged;
 
         public int Lives => stacks != null ? stacks.Get(StackType.Life) : 0;
         public bool IsDead => isDead;
@@ -97,6 +98,7 @@ namespace LevelDesign.Systems
             if(isDead) { return; }
 
             currentHealth -= damage;
+            Damaged?.Invoke(damage);
 
             if(currentHealth <= 0) {
                 Die();

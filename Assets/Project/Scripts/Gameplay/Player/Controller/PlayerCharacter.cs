@@ -6,24 +6,21 @@ using KinematicCharacterController;
 using LevelDesign.Async.Auth;
 using LevelDesign.Data;
 
-namespace LevelDesign.Systems.Player
-{
-    public struct CharacterState
-    {
+namespace LevelDesign.Systems.Player {
+    public struct CharacterState {
         public bool Grounded;
         public Stance Stance;
         public Vector3 Velocity;
     }
 
-    public class PlayerCharacter : _MovementController, ICharacterController
-    {
+    public class PlayerCharacter : _MovementController, ICharacterController {
         [BoxGroup("Scene Refs")]
         [SerializeField] private KinematicCharacterMotor motor;
         [BoxGroup("Scene Refs")]
         [SerializeField] private Transform cameraTarget;
         [BoxGroup("Scene Refs")]
         [SerializeField] private Transform particleSpawnPoint;
-        
+
         [BoxGroup("Particles")]
         [SerializeField] private GameObject jumpParticle;
 
@@ -49,7 +46,7 @@ namespace LevelDesign.Systems.Player
         [SerializeField] private float crouchSpeed = 10f;
         [TabGroup("Movement", "Speeds")]
         [SerializeField] private float sprintSpeed = 32f;
-        [TabGroup("Movement", "Speeds")] 
+        [TabGroup("Movement", "Speeds")]
         [SerializeField] private float airSpeed = 15f;
         [TabGroup("Movement", "Speeds")]
         [SerializeField] private float airAcceleration = 70f;
@@ -78,7 +75,7 @@ namespace LevelDesign.Systems.Player
         [SerializeField] private bool debugSprinting;
         [BoxGroup("Debug")]
         [SerializeField] private RigInfo currentRigInfo;
-        
+
         public CharacterState state;
         private CharacterState lastState;
 
@@ -93,7 +90,7 @@ namespace LevelDesign.Systems.Player
         private float timeSinceSprint;
 
         private int currentJumpCount;
-        
+
         private Transform playerCamera;
 
         private PlayerStateMachine psm;
@@ -101,14 +98,12 @@ namespace LevelDesign.Systems.Player
         private const float MinPlanarSqrMagnitude = 0.0001f;
         private const float MinSlideSpeedRatio = .7f;
 
-        public override void _Initialize(PlayerStateMachine psm, CharacterDataSO characterdata)
-        {
-            if(_isInitialized){
-                return;
-            }
+        #region Core
+        public override void _Initialize(PlayerStateMachine psm, CharacterDataSO characterdata) {
+            if(_isInitialized) { return; }
 
             _isInitialized = true;
-            
+
             aInputInit(true);
             InputAuthManager.Instance.RequestInput(this);
 
@@ -128,11 +123,8 @@ namespace LevelDesign.Systems.Player
             motor.enabled = false;
         }
 
-        public override void _UpdateBody(float deltaTime, Transform playerCam)
-        {
-            if(!_isInitialized || motor == null || cameraTarget == null){
-                return;
-            }
+        public override void _UpdateBody(float deltaTime, Transform playerCam) {
+            if(!_isInitialized || motor == null || cameraTarget == null) { return; }
 
             playerCamera = playerCam;
 
@@ -149,36 +141,40 @@ namespace LevelDesign.Systems.Player
                 1f - Mathf.Exp(-heightResponse * deltaTime));
         }
 
-        private void UpdateCameraYaw()
-        {
-            if(playerCamera == null){
-                return;
+        public override void _SpawnVisuals() {
+            currentRigInfo = Instantiate(_characterData.thirdPersonVisuals, _visualSpawnPoint);
+            if(currentRigInfo != null) {
+                currentRigInfo.meshManager.disableMeshes = true;
+                currentRigInfo.playerAnimation.m_Controller = this;
+                currentRigInfo.localPlayer = true;
             }
+        }
+
+        private void UpdateCameraYaw() {
+            if(playerCamera == null) { return; }
 
             var up = motor.CharacterUp;
             var forward = Vector3.ProjectOnPlane(playerCamera.forward, up);
 
-            if(forward.sqrMagnitude < MinPlanarSqrMagnitude){
+            if(forward.sqrMagnitude < MinPlanarSqrMagnitude) {
                 forward = Vector3.ProjectOnPlane(playerCamera.up, up) * -Mathf.Sign(Vector3.Dot(playerCamera.forward, up));
             }
 
-            if(forward.sqrMagnitude > MinPlanarSqrMagnitude){
+            if(forward.sqrMagnitude > MinPlanarSqrMagnitude) {
                 cameraYaw = Quaternion.LookRotation(forward.normalized, up);
             }
         }
 
-        public void ClearInput()
-        {
+        public void ClearInput() {
             requestedMovement = Vector3.zero;
             requestedJump = false;
             requestedCrouch = false;
             requestedSprint = false;
         }
 
-        public void UpdateInput()
-        {
-            if(!_isInitialized || !_inputAuthorized) { 
-                ClearInput(); 
+        public void UpdateInput() {
+            if(!_isInitialized || !_inputAuthorized) {
+                ClearInput();
                 return;
             }
 
@@ -192,119 +188,59 @@ namespace LevelDesign.Systems.Player
             requestedSprint = _input.Sprint.IsPressed();
         }
 
-        public override Transform _GetCameraTarget() => cameraTarget;
-        public override Vector3 _GetVelocity() => state.Velocity;
-        public override float _GetWalkSpeed() => walkSpeed;
-        public override RigInfo _GetCurrentRigInfo()
-        {
-            if(currentRigInfo == null) {
-                FindComponent(ref currentRigInfo);
-            }
-
-            return currentRigInfo;
-        }
-        
-        void FindComponent<T>(ref T field) where T : Component
-        {
-            if (field != null) return;
+        private void FindComponent<T>(ref T field) where T : Component {
+            if(field != null) { return; }
 
             field = GetComponent<T>() ?? GetComponentInChildren<T>();
         }
 
-        public override void _Teleport(Vector3 position)
-        {
-            if(motor == null){
-                return;
-            }
-            motor.BaseVelocity = Vector3.zero;
-            motor.SetPosition(position);
+        private void SetCrouched(bool crouch) {
+            if(crouch == isCrouched) { return; }
+
+            isCrouched = crouch;
+
+            var height = crouch ? crouchHeight : standHeight;
+            motor.SetCapsuleDimensions(motor.Capsule.radius, height, height * .5f);
         }
+        #endregion
 
-        public override void _SetRotation(Quaternion rotation)
-        {
-            if(motor == null){
-                return;
-            }
-            cameraYaw = rotation;
-            requestedRotation = rotation;
-            motor.SetRotation(rotation);
-        }
-
-        public override void _SpawnVisuals() {
-            currentRigInfo = Instantiate(_characterData.thirdPersonVisuals, _visualSpawnPoint);
-            if(currentRigInfo != null) {
-                currentRigInfo.meshManager.disableMeshes = true;
-                currentRigInfo.playerAnimation.m_Controller = this;
-                currentRigInfo.localPlayer = true;
-            }
-            
-        }
-
-        public void ResetMovementStates()
-        {
-            if(!_isInitialized || motor == null){
-                return;
-            }
-
-            ClearInput();
-            state = default;
-            state.Stance = Stance.Stand;
-            lastState = state;
-            motor.BaseVelocity = Vector3.zero;
-            isSprinting = false;
-            timeSinceSprint = sprintCoyoteTime + 1f;
-            SetCrouched(false);
-        }
-
-        public CharacterState GetState() => state;
-        public Stance GetStance() => state.Stance;
-        public bool GetIsSprinting() => isSprinting;
-
-        public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
-        {
+        #region Character Controller
+        public void UpdateRotation(ref Quaternion currentRotation, float deltaTime) {
             var forward = Vector3.ProjectOnPlane(requestedRotation * Vector3.forward, motor.CharacterUp);
-            if(forward != Vector3.zero){
+            if(forward != Vector3.zero) {
                 currentRotation = Quaternion.LookRotation(forward, motor.CharacterUp);
             }
         }
 
-        public void BeforeCharacterUpdate(float deltaTime)
-        {
+        public void BeforeCharacterUpdate(float deltaTime) {
             lastState = state;
             SetCrouched(requestedCrouch);
         }
 
-        public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
-        {
+        public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime) {
             var grounded = motor.GroundingStatus.IsStableOnGround;
-            if(grounded){ 
+            if(grounded) {
                 currentJumpCount = 0;
-            } 
+            }
 
             timeSinceSprint += deltaTime;
 
-            if(grounded)
-            {
+            if(grounded) {
                 var groundedMovement = motor.GetDirectionTangentToSurface(
                     requestedMovement, motor.GroundingStatus.GroundNormal) * requestedMovement.magnitude;
 
-                if(state.Stance is Stance.Slide && isCrouched)
-                {
+                if(state.Stance is Stance.Slide && isCrouched) {
                     UpdateSlide(ref currentVelocity, groundedMovement, deltaTime);
-                }
-                else if(CanStartSlide(currentVelocity, groundedMovement) && _TryUseStack(StackType.Slide))
-                {
+                } else if(CanStartSlide(currentVelocity, groundedMovement) && _TryUseStack(StackType.Slide)) {
                     StartSlide(ref currentVelocity);
-                }
-                else
-                {
+                } else {
                     state.Stance = isCrouched ? Stance.Crouch : Stance.Stand;
 
                     isSprinting = !isCrouched
                                   && requestedSprint
                                   && requestedMovement.sqrMagnitude > MinPlanarSqrMagnitude;
 
-                    if(isSprinting){
+                    if(isSprinting) {
                         timeSinceSprint = 0f;
                     }
 
@@ -315,26 +251,20 @@ namespace LevelDesign.Systems.Player
                         groundedMovement * speed,
                         1f - Mathf.Exp(-groundResponse * deltaTime));
                 }
-            }
-            else
-            {
+            } else {
                 state.Stance = Stance.Air;
                 isSprinting = false;
 
-                if(requestedMovement.sqrMagnitude > 0f)
-                {
+                if(requestedMovement.sqrMagnitude > 0f) {
                     var planarMovement = Vector3.ProjectOnPlane(requestedMovement, motor.CharacterUp).normalized
                                          * requestedMovement.magnitude;
                     var planarVelocity = Vector3.ProjectOnPlane(currentVelocity, motor.CharacterUp);
                     var movementForce = planarMovement * airAcceleration * deltaTime;
 
-                    if(planarVelocity.magnitude < airSpeed)
-                    {
+                    if(planarVelocity.magnitude < airSpeed) {
                         var target = Vector3.ClampMagnitude(planarVelocity + movementForce, airSpeed);
                         movementForce = target - planarVelocity;
-                    }
-                    else if(Vector3.Dot(planarVelocity, movementForce) > 0f)
-                    {
+                    } else if(Vector3.Dot(planarVelocity, movementForce) > 0f) {
                         movementForce = Vector3.ProjectOnPlane(movementForce, planarVelocity.normalized);
                     }
 
@@ -363,16 +293,11 @@ namespace LevelDesign.Systems.Player
             }
         }
 
-        private bool CanStartSlide(Vector3 currentVelocity, Vector3 groundedMovement)
-        {
-            if(!isCrouched || groundedMovement.sqrMagnitude < MinPlanarSqrMagnitude){
-                return false;
-            }
+        private bool CanStartSlide(Vector3 currentVelocity, Vector3 groundedMovement) {
+            if(!isCrouched || groundedMovement.sqrMagnitude < MinPlanarSqrMagnitude) { return false; }
 
             var planarSpeed = Vector3.ProjectOnPlane(currentVelocity, motor.GroundingStatus.GroundNormal).magnitude;
-            if(planarSpeed < walkSpeed * MinSlideSpeedRatio){
-                return false;
-            }
+            if(planarSpeed < walkSpeed * MinSlideSpeedRatio) { return false; }
 
             var wasInAir = !lastState.Grounded;
             var wasSprinting = lastState.Stance is Stance.Stand && timeSinceSprint <= sprintCoyoteTime;
@@ -380,11 +305,10 @@ namespace LevelDesign.Systems.Player
             return wasInAir || wasSprinting;
         }
 
-        private void StartSlide(ref Vector3 currentVelocity)
-        {
+        private void StartSlide(ref Vector3 currentVelocity) {
             var groundNormal = motor.GroundingStatus.GroundNormal;
 
-            if(!lastState.Grounded){
+            if(!lastState.Grounded) {
                 currentVelocity = Vector3.ProjectOnPlane(lastState.Velocity, groundNormal);
             }
 
@@ -395,28 +319,25 @@ namespace LevelDesign.Systems.Player
             currentVelocity = motor.GetDirectionTangentToSurface(currentVelocity, groundNormal) * speed;
         }
 
-        private void UpdateSlide(ref Vector3 currentVelocity, Vector3 groundedMovement, float deltaTime)
-        {
+        private void UpdateSlide(ref Vector3 currentVelocity, Vector3 groundedMovement, float deltaTime) {
             isSprinting = false;
 
             currentVelocity -= currentVelocity * (slideFriction * deltaTime);
             currentVelocity += Vector3.ProjectOnPlane(motor.CharacterUp, motor.GroundingStatus.GroundNormal)
                                * (slideGravity * deltaTime);
 
-            if(groundedMovement.sqrMagnitude > MinPlanarSqrMagnitude)
-            {
+            if(groundedMovement.sqrMagnitude > MinPlanarSqrMagnitude) {
                 var currentSpeed = currentVelocity.magnitude;
                 var steerForce = (groundedMovement * currentSpeed - currentVelocity) * (slideSteerAcceleration * deltaTime);
                 currentVelocity = Vector3.ClampMagnitude(currentVelocity + steerForce, currentSpeed);
             }
 
-            if(currentVelocity.magnitude < crouchSpeed){
+            if(currentVelocity.magnitude < crouchSpeed) {
                 state.Stance = Stance.Crouch;
             }
         }
 
-        public void AfterCharacterUpdate(float deltaTime)
-        {
+        public void AfterCharacterUpdate(float deltaTime) {
             state.Grounded = motor.GroundingStatus.IsStableOnGround;
             state.Velocity = motor.Velocity;
             _stanceMirror = state.Stance;
@@ -430,16 +351,52 @@ namespace LevelDesign.Systems.Player
         public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, ref HitStabilityReport hitStabilityReport) { }
         public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition, Quaternion atCharacterRotation, ref HitStabilityReport hitStabilityReport) { }
         public void OnDiscreteCollisionDetected(Collider hitCollider) { }
+        #endregion
 
-        private void SetCrouched(bool crouch)
-        {
-            if(crouch == isCrouched){
-                return;
+        #region Public Accessors
+        public override Transform _GetCameraTarget() => cameraTarget;
+        public override Vector3 _GetVelocity() => state.Velocity;
+        public override float _GetWalkSpeed() => walkSpeed;
+
+        public override RigInfo _GetCurrentRigInfo() {
+            if(currentRigInfo == null) {
+                FindComponent(ref currentRigInfo);
             }
-            isCrouched = crouch;
 
-            var height = crouch ? crouchHeight : standHeight;
-            motor.SetCapsuleDimensions(motor.Capsule.radius, height, height * .5f);
+            return currentRigInfo;
         }
+
+        public override void _Teleport(Vector3 position) {
+            if(motor == null) { return; }
+
+            motor.BaseVelocity = Vector3.zero;
+            motor.SetPosition(position);
+        }
+
+        public override void _SetRotation(Quaternion rotation) {
+            if(motor == null) { return; }
+
+            cameraYaw = rotation;
+            requestedRotation = rotation;
+            motor.SetRotation(rotation);
+        }
+
+        public void ResetMovementStates() {
+            if(!_isInitialized || motor == null) { return; }
+
+            ClearInput();
+            state = default;
+            state.Stance = Stance.Stand;
+            lastState = state;
+            motor.BaseVelocity = Vector3.zero;
+            isSprinting = false;
+            timeSinceSprint = sprintCoyoteTime + 1f;
+            SetCrouched(false);
+        }
+
+        public CharacterState GetState() => state;
+        public Stance GetStance() => state.Stance;
+        public bool GetIsSprinting() => isSprinting;
+        #endregion
     }
 }

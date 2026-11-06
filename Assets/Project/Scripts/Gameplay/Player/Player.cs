@@ -10,7 +10,7 @@ namespace LevelDesign.Systems.Player
         public PlayerStateMachine PSM;
         [BoxGroup("State Machine")]
         [SerializeField] private LocalPlayerState LPS;
-        
+
         [BoxGroup("Controllers")]
         [SerializeField] private PlayerCamera playerCamera;
         [Space]
@@ -18,6 +18,9 @@ namespace LevelDesign.Systems.Player
         [SerializeField] private _MovementController playerCharacter;
         [BoxGroup("Controllers")]
         [SerializeField] private ArmController playerArmController;
+
+        [BoxGroup("Drops")]
+        [SerializeField] private GameObject healthPickup;
 
         [BoxGroup("Managers")]
         public CharacterDataManager characterDataM;
@@ -32,11 +35,15 @@ namespace LevelDesign.Systems.Player
 
         private Transform cameraFocalTarget;
         private Transform spectatorCameraTarget;
+        private GameManager subscribedGameManager;
 
         #region Unity Calls
         public void Initialize() {
-            if(LPS.isLocalPlayer) { LocalInit(); }
-            else { RemoteInit(); }
+            if(LPS.isLocalPlayer) {
+                LocalInit();
+            } else {
+                RemoteInit();
+            }
         }
 
         private void Update() {
@@ -45,27 +52,26 @@ namespace LevelDesign.Systems.Player
 
             if(!LPS.isLocalPlayer) { return; }
 
-            if(GameManager.Instance != null)
-            {
-                if(GameManager.Instance.localState == GameState.Playing)
-                {
-                    PSM.isPlaying = true;
-                }
-                else
-                {
-                    PSM.isPlaying = false;
-                }
+            if(GameManager.Instance != null) {
+                PSM.isPlaying = GameManager.Instance.localState == GameState.Playing;
             }
+
+            SyncLifeState();
         }
 
-        private void LateUpdate()
-        {
+        private void LateUpdate() {
             UpdateCameraTarget();
         }
 
-        private void OnDestroy()
-        {
-            healthM.Died -= OnDeath;
+        private void OnDestroy() {
+            if(healthM != null) {
+                healthM.Died -= OnDeath;
+            }
+
+            if(subscribedGameManager != null) {
+                subscribedGameManager.OnStateEntered -= OnGameStateEntered;
+                subscribedGameManager = null;
+            }
         }
         #endregion
 
@@ -80,15 +86,30 @@ namespace LevelDesign.Systems.Player
             playerCamera.Initialize(PSM);
             characterDataM.Initialize();
             healthM.Initialize(StackM);
-            respawnM.Initialize(this, PSM, characterDataM, playerCamera);
+            respawnM.Initialize(this, characterDataM, playerCamera);
             uiM.Initialize(Player: this);
 
+            StartUnspawned();
+
             if(GameManager.Instance != null) {
-                GameManager.Instance.RegisterLocalPlayer(this);
+                subscribedGameManager = GameManager.Instance;
+                subscribedGameManager.OnStateEntered += OnGameStateEntered;
+                subscribedGameManager.RegisterLocalPlayer(this);
+
+                if(subscribedGameManager.localState == GameState.GameOver) {
+                    OnGameOver();
+                }
             } else {
                 Debug.LogWarning("Player could not register: no GameManager in the scene");
             }
         }
+
+        // The player begins with no body and zero health, so the first spawn goes through the same respawn flow as every later one.
+        private void StartUnspawned() {
+            characterDataM.ClearCharacter();
+            healthM.currentHealth = 0;
+        }
+
         private void RemoteInit() {
             playerCamera.RemoteInit();
         }
@@ -96,23 +117,20 @@ namespace LevelDesign.Systems.Player
 
         #region Controllers
         public void ProcessControllers() {
-            if(playerCamera != null)
-            {
+            if(playerCamera != null) {
                 playerCamera.UpdateCameraInput();
                 playerCamera.UpdateRotation();
             }
-            if(playerCharacter != null && playerCamera != null)
-            {
+
+            if(playerCharacter != null && playerCamera != null) {
                 playerCharacter._UpdateBody(Time.deltaTime, playerCamera.gameObject.transform);
             }
         }
 
-        public void UpdateCameraTarget()
-        {
+        public void UpdateCameraTarget() {
             if(playerCamera == null) { return; }
 
-            if (!PSM.isCinematic)
-            {
+            if(!PSM.isCinematic) {
                 if(playerCharacter == null) { return; }
 
                 spectatorCameraTarget = null;
@@ -121,13 +139,8 @@ namespace LevelDesign.Systems.Player
                 if(cameraFocalTarget == null) { return; }
 
                 playerCamera.UpdatePosition(cameraFocalTarget);
-            }
-            else
-            {
-                if (spectatorCameraTarget == null)
-                {
-                    return;
-                }
+            } else {
+                if(spectatorCameraTarget == null) { return; }
 
                 playerCamera.SnapToTarget(spectatorCameraTarget);
             }
@@ -139,19 +152,19 @@ namespace LevelDesign.Systems.Player
         #region Checks
         private void RoutineChecks() {
             if(!LPS.isLocalPlayer) {
-                if(playerCharacter == null) { 
+                if(playerCharacter == null) {
                     playerCharacter = GetComponentInChildren<_MovementController>();
-                    
+
                     if(playerCharacter != null && playerCharacter.enabled) {
-                       playerCharacter._RemoteInit(); 
+                        playerCharacter._RemoteInit();
                     }
                 }
-                
+
                 if(playerCharacter != null) {
                     RigInfo rig = playerCharacter._GetCurrentRigInfo();
                 }
             }
-            
+
             if(characterDataM.currentMovementController != null && LPS.isLocalPlayer) {
                 if(!characterDataM.currentMovementController._isInitialized) {
                     playerCharacter = characterDataM.currentMovementController;
@@ -164,24 +177,45 @@ namespace LevelDesign.Systems.Player
             if(characterDataM.currentArmController != null && LPS.isLocalPlayer) {
                 if(!characterDataM.currentArmController.isInitialized) {
                     playerArmController = characterDataM.currentArmController;
-                    
-                    if(playerCharacter != null)
-                    {
+
+                    if(playerCharacter != null) {
                         playerArmController.Initialize(playerRef: this, controller: playerCharacter);
                     }
                 }
             }
         }
 
-        public void OnDeath()
-        {
+        // PSM life flags are a read-only mirror for systems that still read them; HealthManager and RespawnManager own the actual state.
+        private void SyncLifeState() {
+            PSM.isDead = IsDead;
+            PSM.awaitingRespawn = respawnM.IsAwaitingRespawn;
+        }
+
+        public void OnDeath() {
+            Vector3 spawnHealthPickupPoint = characterDataM.currentCharacterObject.transform.position;
+            Instantiate(healthPickup, spawnHealthPickupPoint, Quaternion.identity, null);
+
             characterDataM.ClearCharacter();
             respawnM.StartDeathTimer();
+        }
+
+        private void OnGameStateEntered(GameState next) {
+            if(next != GameState.GameOver) { return; }
+
+            OnGameOver();
+        }
+
+        private void OnGameOver() {
+            characterDataM.ClearCharacter();
+            playerCharacter = null;
+            playerArmController = null;
         }
         #endregion
 
         #region Public Accessors
         public bool IsLocalPlayer => LPS != null && LPS.isLocalPlayer;
+
+        public bool IsDead => healthM != null && healthM.currentHealth <= 0;
 
         public Transform GetCameraTarget() {
             return playerCharacter != null ? playerCharacter._GetCameraTarget() : null;

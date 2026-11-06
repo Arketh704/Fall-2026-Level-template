@@ -16,6 +16,7 @@
   <Project Path="AllIn1VfxToolkitAssembly.Editor.csproj" />
   <Project Path="Yasinski.SimpleFolders.Colorizer.Editor.csproj" />
   <Project Path="Unity.PurrNet.Codegen.csproj" />
+  <Project Path="AllIn13DShaderDemoScriptsAssembly.csproj" />
   <Project Path="AllIn1SharedExtensionsAssembly.csproj" />
   <Project Path="Flexalon.csproj" />
   <Project Path="AllIn1VfxToolkitAssembly.csproj" />
@@ -28,6 +29,7 @@
   <Project Path="PurrNet.Edgegap.Runtime.csproj" />
   <Project Path="PurrNet.UTP.Runtime.csproj" />
   <Project Path="Evo.Editor.csproj" />
+  <Project Path="AllIn13DShaderAssembly.Editor.csproj" />
   <Project Path="PurrNet.UTP.Editor.csproj" />
   <Project Path="QFSW.QC.Serializers.csproj" />
   <Project Path="QFSW.QC.Suggestors.csproj" />
@@ -40,6 +42,7 @@
   <Project Path="Evo.csproj" />
   <Project Path="PurrNet.Nakama.Editor.csproj" />
   <Project Path="QFSW.QC.Demo.csproj" />
+  <Project Path="AllIn13DShaderAssembly.csproj" />
   <Project Path="PurrNet.Examples.csproj" />
   <Project Path="QFSW.QC.Editor.Tools.csproj" />
   <Project Path="Flexalon.Samples.Editor.csproj" />

@@ -26,7 +26,14 @@ namespace LevelDesign.Systems.Player
         [SerializeField] private float range = 200f;
         [BoxGroup("Damage")]
         [SerializeField] private LayerMask hitMask = ~0;
-        
+
+        [BoxGroup("FX")]
+        [SerializeField] private GameObject muzzleFlashPrefab;
+        [BoxGroup("FX")]
+        [SerializeField] private Transform muzzle;
+        [BoxGroup("FX")]
+        [SerializeField] private GameObject impactPrefab;
+
         [BoxGroup("Debug")]
         public Player player => armController.player;
 
@@ -284,6 +291,10 @@ namespace LevelDesign.Systems.Player
             recoilTarget += Motion.GetRecoil(shotIndex++);
             kickTarget = 1f;
 
+            if(muzzleFlashPrefab) {
+                Instantiate(muzzleFlashPrefab, muzzle ? muzzle : viewModel);
+            }
+
             ApplyHit();
 
             Fired?.Invoke();
@@ -298,6 +309,7 @@ namespace LevelDesign.Systems.Player
             int hitCount = Physics.RaycastNonAlloc(origin.position, origin.forward, hitBuffer, range, hitMask, QueryTriggerInteraction.Collide);
 
             Collider closest = null;
+            RaycastHit closestHit = default;
             float closestDistance = float.MaxValue;
 
             for(int i = 0; i < hitCount; i++) {
@@ -306,16 +318,25 @@ namespace LevelDesign.Systems.Player
 
                 if(!isShooter && hit.distance < closestDistance) {
                     closest = hit.collider;
+                    closestHit = hit;
                     closestDistance = hit.distance;
                 }
             }
 
             if(!closest) { return; }
 
+            SpawnImpact(closestHit);
+
             Hurtbox hurtbox = closest.GetComponentInParent<Hurtbox>();
             if(!hurtbox) { return; }
 
             hurtbox.Trigger(damage, true);
+        }
+
+        void SpawnImpact(RaycastHit hit) {
+            if(!impactPrefab) { return; }
+
+            Instantiate(impactPrefab, hit.point, Quaternion.LookRotation(hit.normal));
         }
         #endregion
 

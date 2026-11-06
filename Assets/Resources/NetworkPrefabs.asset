@@ -39,3 +39,27 @@ MonoBehaviour:
     prefab: {fileID: 1015484155540287969, guid: e8ccc75c0fce85a43b46df58108d44f8, type: 3}
     pooled: 0
     warmupCount: 5
+  - guid: 68cfe35f1b1bf6f49a748fd11c96f820
+    prefab: {fileID: 3291244538907713110, guid: 68cfe35f1b1bf6f49a748fd11c96f820, type: 3}
+    pooled: 0
+    warmupCount: 5
+  - guid: 33cde6bf259a3cf42a73bb4315eb8ccd
+    prefab: {fileID: 1599479519033770541, guid: 33cde6bf259a3cf42a73bb4315eb8ccd, type: 3}
+    pooled: 0
+    warmupCount: 5
+  - guid: 2f24c1033dd620c48a17661314818adf
+    prefab: {fileID: 6343681210035503958, guid: 2f24c1033dd620c48a17661314818adf, type: 3}
+    pooled: 0
+    warmupCount: 5
+  - guid: cdcf7d71e96a122408e9647ea1db1769
+    prefab: {fileID: 2338555122127377929, guid: cdcf7d71e96a122408e9647ea1db1769, type: 3}
+    pooled: 0
+    warmupCount: 5
+  - guid: d6b0b23230d90944d9d05d5fa16c5b51
+    prefab: {fileID: 2524458659496475908, guid: d6b0b23230d90944d9d05d5fa16c5b51, type: 3}
+    pooled: 0
+    warmupCount: 5
+  - guid: 66b72e301e61b65468e33291cf25ce15
+    prefab: {fileID: 2524458659496475908, guid: 66b72e301e61b65468e33291cf25ce15, type: 3}
+    pooled: 0
+    warmupCount: 5

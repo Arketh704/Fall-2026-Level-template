@@ -19,8 +19,6 @@ namespace LevelDesign
         [SerializeField] private CharacterDataSO characterData;
 
         [BoxGroup("Debug")]
-        public PlayerStateMachine PSM;
-        [BoxGroup("Debug")]
         [SerializeField] private RespawnPoint activePoint;
         [BoxGroup("Debug")]
         public float deathTimeRemaining;
@@ -33,18 +31,12 @@ namespace LevelDesign
         public event Action<RespawnPoint> OnConfirmed;
         #endregion
 
-        #region Unity
-        private void Update()
-        {
-            if(PSM.isDead)
-            {
-                deathTimeRemaining -= Time.deltaTime;
+        #region Unity Calls
+        private void Update() {
+            if(player == null || !player.IsDead) { return; }
 
-                if(deathTimeRemaining <= 0f) { 
-                    PSM.isDead = false;
-                    PSM.awaitingRespawn = true;
-                    player.healthM.ResetHealth();
-                }
+            if(deathTimeRemaining > 0f) {
+                deathTimeRemaining = Mathf.Max(0f, deathTimeRemaining - Time.deltaTime);
             }
         }
         #endregion
@@ -80,15 +72,10 @@ namespace LevelDesign
             }
 
             player.ExitCinematic();
+            player.healthM.ResetHealth();
             OnConfirmed?.Invoke(point);
 
             spawnRoutine = null;
-        }
-
-        public void StartDeathTimer()
-        {
-            deathTimeRemaining = deathLength;
-            PSM.isDead = true;
         }
 
         private Quaternion GetFlatRotation(Transform point) {
@@ -101,11 +88,20 @@ namespace LevelDesign
         #endregion
 
         #region Public Accessors
-        public void Initialize(Player playerRef, PlayerStateMachine psm, CharacterDataManager dataManager, PlayerCamera cameraRef) {
+        public bool IsSpawning => spawnRoutine != null;
+
+        public bool DeathTimerElapsed => deathTimeRemaining <= 0f;
+
+        public bool IsAwaitingRespawn => player != null && player.IsDead && DeathTimerElapsed && !IsSpawning;
+
+        public void Initialize(Player playerRef, CharacterDataManager dataManager, PlayerCamera cameraRef) {
             player = playerRef;
-            PSM = psm;
             characterDataM = dataManager;
             playerCamera = cameraRef;
+        }
+
+        public void StartDeathTimer() {
+            deathTimeRemaining = deathLength;
         }
 
         public void SetActivePoint(RespawnPoint point) {
@@ -117,7 +113,7 @@ namespace LevelDesign
         }
 
         public void Confirm() {
-            if(spawnRoutine != null) { return; }
+            if(!IsAwaitingRespawn) { return; }
 
             if(activePoint == null) {
                 Debug.LogWarning("Respawn Manager has no active respawn point to confirm");
@@ -129,12 +125,11 @@ namespace LevelDesign
                 return;
             }
 
-            if(player == null || characterDataM == null) {
+            if(characterDataM == null) {
                 Debug.LogWarning("Respawn Manager was confirmed before it was initialized");
                 return;
             }
 
-            PSM.awaitingRespawn = false;
             spawnRoutine = StartCoroutine(SpawnRoutine(activePoint));
         }
         #endregion
