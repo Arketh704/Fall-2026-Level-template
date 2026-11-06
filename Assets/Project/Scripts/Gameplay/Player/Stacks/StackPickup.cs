@@ -62,14 +62,7 @@ namespace LevelDesign.Systems.Player {
             ValidateVisuals();
             ApplyAvailable(available.value);
 
-            if(respawns)
-            {
-                respawnableObject.SetActive(true);
-            }
-            else
-            {
-                respawnableObject.SetActive(false);
-            }
+            SetObjectActive(respawnableObject, respawns);
         }
 
         protected override void OnSpawned() {
@@ -155,10 +148,12 @@ namespace LevelDesign.Systems.Player {
                 BuildVisualLookup();
             }
 
+            bool showReady = value || !respawns;
+
             foreach(StackPickupVisual entry in visuals) {
                 bool isCurrentType = entry.Type == type;
-                SetObjectActive(entry.ReadyToUseObject, isCurrentType && value);
-                SetObjectActive(entry.OnCooldownObject, isCurrentType && !value);
+                SetObjectActive(entry.ReadyToUseObject, isCurrentType && showReady);
+                SetObjectActive(entry.OnCooldownObject, isCurrentType && !showReady);
             }
         }
 
@@ -184,7 +179,7 @@ namespace LevelDesign.Systems.Player {
             if(current.ReadyToUseObject == null) {
                 Debug.LogWarning($"StackPickup has no ReadyToUseObject for {type}; nothing will show while it is available.", this);
             }
-            if(current.OnCooldownObject == null) {
+            if(respawns && current.OnCooldownObject == null) {
                 Debug.LogWarning($"StackPickup has no OnCooldownObject for {type}; nothing will show while it is on cooldown.", this);
             }
 

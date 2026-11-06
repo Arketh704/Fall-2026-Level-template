@@ -2421,7 +2421,7 @@ MonoBehaviour:
     Unlimited: 0
     Current: 0
   - Type: 2
-    StartAmount: 3
+    StartAmount: 5
     Unlimited: 0
     Current: 0
   - Type: 3
