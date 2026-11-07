@@ -22,13 +22,6 @@ namespace LevelDesign.Systems.Player
         #region Unity Calls
         // Each nameplate gets its own material instance so remote players don't share one fill value.
         private void Awake() {
-            if(followTarget == null) {
-                followTarget = transform.parent;
-            }
-            if(followTarget != null) {
-                followOffset = transform.position - followTarget.position;
-            }
-
             if(healthBar == null) { return; }
 
             fillMaterial = new Material(healthBar.material);
