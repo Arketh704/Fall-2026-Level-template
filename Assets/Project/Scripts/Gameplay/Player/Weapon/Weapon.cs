@@ -331,6 +331,7 @@ namespace LevelDesign.Systems.Player
             if(!hurtbox) { return; }
 
             hurtbox.Trigger(damage, true);
+            player.uiM.GameplayHit();
         }
 
         void SpawnImpact(RaycastHit hit) {

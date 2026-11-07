@@ -14,6 +14,7 @@ namespace LevelDesign.Systems.Player {
     [RequireComponent(typeof(Collider))]
     [RequireComponent(typeof(Rigidbody))]
     public class StackPickup : NetworkBehaviour {
+        #region Fields
         [Header("Config")]
         [SerializeField] private StackType type = StackType.Ammo;
         [SerializeField] private int amount = 1;
@@ -46,6 +47,7 @@ namespace LevelDesign.Systems.Player {
 
         public event Action<StackPickup, Player> Collected;
         public event Action<StackPickup, bool> AvailabilityChanged;
+        #endregion
 
         #region Unity Calls
         private void Awake() {
@@ -148,12 +150,10 @@ namespace LevelDesign.Systems.Player {
                 BuildVisualLookup();
             }
 
-            bool showReady = value || !respawns;
-
             foreach(StackPickupVisual entry in visuals) {
                 bool isCurrentType = entry.Type == type;
-                SetObjectActive(entry.ReadyToUseObject, isCurrentType && showReady);
-                SetObjectActive(entry.OnCooldownObject, isCurrentType && !showReady);
+                SetObjectActive(entry.ReadyToUseObject, isCurrentType && value);
+                SetObjectActive(entry.OnCooldownObject, isCurrentType && !value && respawns);
             }
         }
 

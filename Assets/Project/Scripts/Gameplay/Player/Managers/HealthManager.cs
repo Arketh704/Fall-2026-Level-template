@@ -10,8 +10,14 @@ namespace LevelDesign.Systems
         public float currentHealth;
         public float maxHealth;
 
+        [SerializeField] private float regenDelay = 3f;
+        [SerializeField] private float regenPerSecond = 10f;
+        [SerializeField] private float regenInterval = 0.25f;
+
         private StackManager stacks;
         private bool isDead;
+        private float lastDamageTime;
+        private float nextRegenTime;
 
         // Died fires when a life was spent and a respawn is expected; call Revive() once the player is back.
         public event Action Died;
@@ -25,6 +31,16 @@ namespace LevelDesign.Systems
         public void Initialize(StackManager stackManager) {
             stacks = stackManager;
             isDead = false;
+        }
+
+        // Regen runs where damage resolves, and ticks at an interval so it doesn't send a health RPC every frame.
+        private void Update() {
+            if(isSpawned && !isOwner) { return; }
+            if(isDead || currentHealth <= 0 || currentHealth >= maxHealth) { return; }
+            if(Time.time - lastDamageTime < regenDelay || Time.time < nextRegenTime) { return; }
+
+            nextRegenTime = Time.time + regenInterval;
+            Heal(regenPerSecond * regenInterval);
         }
 
         // Damage resolves on the owning client, since that is where the life stacks live. Anyone else routes it through the server.
@@ -58,12 +74,12 @@ namespace LevelDesign.Systems
             stacks.Add(StackType.Life, increase);
         }
 
-        public void RemoveLife(int removal) 
+        public void RemoveLife(int removal)
         {
             if(stacks == null) { return; }
 
             stacks.ConsumeUpTo(StackType.Life, removal);
-            if(Lives == 0) { 
+            if(Lives == 0) {
                 Defeated();
             }
         }
@@ -98,6 +114,7 @@ namespace LevelDesign.Systems
             if(isDead) { return; }
 
             currentHealth -= damage;
+            lastDamageTime = Time.time;
             Damaged?.Invoke(damage);
 
             if(currentHealth <= 0) {

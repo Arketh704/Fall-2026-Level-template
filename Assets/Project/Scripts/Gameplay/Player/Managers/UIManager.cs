@@ -11,6 +11,10 @@ namespace LevelDesign.Systems.Player
         [BoxGroup("Scene Refs/Gameplay")]
         [SerializeField] private GameObject gamePage;
         [BoxGroup("Scene Refs/Gameplay")]
+        [SerializeField] private GameObject hitmarkerSpawn;
+        [BoxGroup("Scene Refs/Gameplay")]
+        [SerializeField] private GameObject hitmarkerFab;
+        [BoxGroup("Scene Refs/Gameplay")]
         [SerializeField] private TMP_Text healthBarText;
         [BoxGroup("Scene Refs/Gameplay")]
         [SerializeField] private TMP_Text healthBarLowerText;
@@ -60,8 +64,8 @@ namespace LevelDesign.Systems.Player
 
             if(!show) { return; }
 
-            healthBarText.text = healthM.currentHealth.ToString();
-            healthBarLowerText.text = healthM.currentHealth.ToString();
+            healthBarText.text = Mathf.RoundToInt(healthM.currentHealth).ToString();
+            healthBarLowerText.text = Mathf.RoundToInt(healthM.currentHealth).ToString();
 
             healthBarFill.material.SetFloat(FillId, Mathf.Clamp01((float)healthM.currentHealth / healthM.maxHealth));
         }
@@ -98,6 +102,10 @@ namespace LevelDesign.Systems.Player
             healthM = player.healthM;
             respawnM = player.respawnM;
             initialized = true;
+        }
+        public void GameplayHit()
+        {
+            Instantiate(hitmarkerFab, parent: hitmarkerSpawn.transform);
         }
         #endregion
     }

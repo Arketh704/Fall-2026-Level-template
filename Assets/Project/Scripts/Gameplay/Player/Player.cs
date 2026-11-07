@@ -1,10 +1,13 @@
+using System;
 using UnityEngine;
+using PurrNet;
 using TinyInspector;
+using LevelDesign.Async;
 using LevelDesign.Systems;
 
 namespace LevelDesign.Systems.Player
 {
-    public class Player : MonoBehaviour
+    public class Player : NetworkBehaviour
     {
         [BoxGroup("State Machine")]
         public PlayerStateMachine PSM;
@@ -37,6 +40,11 @@ namespace LevelDesign.Systems.Player
         private Transform spectatorCameraTarget;
         private GameManager subscribedGameManager;
 
+        private string displayName = "";
+        private UserData subscribedUserData;
+
+        public event Action<string> NameChanged;
+
         #region Unity Calls
         public void Initialize() {
             if(LPS.isLocalPlayer) {
@@ -63,7 +71,10 @@ namespace LevelDesign.Systems.Player
             UpdateCameraTarget();
         }
 
-        private void OnDestroy() {
+        protected override void OnDestroy() {
+            base.OnDestroy();
+            UnsubscribeUsername();
+
             if(healthM != null) {
                 healthM.Died -= OnDeath;
             }
@@ -127,6 +138,12 @@ namespace LevelDesign.Systems.Player
             }
         }
 
+        private void BindHealthBar() {
+            if(playerCharacter == null || playerCharacter._healthBarDisplay == null) { return; }
+
+            playerCharacter._healthBarDisplay.Bind(this);
+        }
+
         public void UpdateCameraTarget() {
             if(playerCamera == null) { return; }
 
@@ -161,6 +178,7 @@ namespace LevelDesign.Systems.Player
                 }
 
                 if(playerCharacter != null) {
+                    BindHealthBar();
                     RigInfo rig = playerCharacter._GetCurrentRigInfo();
                 }
             }
@@ -171,6 +189,7 @@ namespace LevelDesign.Systems.Player
 
                     playerCharacter._BindStacks(StackM);
                     playerCharacter._Initialize(PSM, characterDataM.currentCharacterData);
+                    BindHealthBar();
                 }
             }
 
@@ -212,8 +231,61 @@ namespace LevelDesign.Systems.Player
         }
         #endregion
 
+        #region Name Sync
+        protected override void OnSpawned() {
+            if(!isOwner) { return; }
+
+            SubscribeUsername();
+        }
+
+        protected override void OnDespawned() {
+            UnsubscribeUsername();
+        }
+
+        private void SubscribeUsername() {
+            if(UserData.Instance == null) {
+                Debug.LogWarning("Player: no UserData instance, name will not be sent");
+                return;
+            }
+
+            subscribedUserData = UserData.Instance;
+            subscribedUserData.OnUsernameChanged += HandleUsernameChanged;
+
+            HandleUsernameChanged(subscribedUserData.Username);
+        }
+
+        private void UnsubscribeUsername() {
+            if(subscribedUserData == null) { return; }
+
+            subscribedUserData.OnUsernameChanged -= HandleUsernameChanged;
+            subscribedUserData = null;
+        }
+
+        private void HandleUsernameChanged(string newUsername) {
+            SetDisplayName(newUsername);
+            SendDisplayName(displayName);
+        }
+
+        private void SetDisplayName(string newName) {
+            displayName = newName ?? "";
+            NameChanged?.Invoke(displayName);
+        }
+
+        [ServerRpc]
+        private void SendDisplayName(string newName) {
+            ReceiveDisplayName(newName);
+        }
+
+        [ObserversRpc(bufferLast: true, excludeOwner: true)]
+        private void ReceiveDisplayName(string newName) {
+            SetDisplayName(newName);
+        }
+        #endregion
+
         #region Public Accessors
         public bool IsLocalPlayer => LPS != null && LPS.isLocalPlayer;
+
+        public string DisplayName => displayName;
 
         public bool IsDead => healthM != null && healthM.currentHealth <= 0;
 

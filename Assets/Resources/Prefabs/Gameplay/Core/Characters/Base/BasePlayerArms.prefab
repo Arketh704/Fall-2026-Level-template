@@ -1375,7 +1375,7 @@ MonoBehaviour:
   viewModel: {fileID: 6927926563664815563}
   armController: {fileID: 3930966425293775012}
   aimOrigin: {fileID: 26373138180034457}
-  damage: 10
+  damage: 23
   range: 200
   hitMask:
     serializedVersion: 2

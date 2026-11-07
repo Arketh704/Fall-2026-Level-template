@@ -21,8 +21,10 @@ namespace LevelDesign.Systems.Player {
         [BoxGroup("_MovementController/Debug")]
         public bool _isInitialized;
         [BoxGroup("_MovementController/Debug")]
-        [FormerlySerializedAs("stanceMirror")]
         public Stance _stanceMirror;
+        
+        [BoxGroup("_MovementController/Nameplate")]
+        public HealthBarDisplay _healthBarDisplay;
 
         protected StackManager _stacks;
 
